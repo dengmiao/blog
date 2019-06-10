@@ -1,0 +1,60 @@
+server:
+  port: 8321
+
+logging:
+  level:
+    org.springframework.data.mongodb.core: DEBUG
+
+spring:
+  thymeleaf:
+    # 热部署
+    cache: false
+    # 编码
+    encoding: utf-8
+    mode: HTML
+
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/blog
+
+# 自定义配置
+blog:
+  # 安全认证相关
+  security:
+    # 登入
+    login-url: /login
+    # 登出
+    logout-url: /logout
+    # 首页
+    index-url: /index
+    # 免认证静态资源路径
+    anon-resources-url:
+      - /**/*.css
+      - /**/*.js
+      - /**/fonts/**
+      - /**/img/**
+      - /favicon.ico
+      - /**/*.html
+      - /login
+      - /logout
+      - /echo
+    # 记住我有效时间(s)
+    remember-me-timeout: 3600
+    # 验证码相关配置
+    code:
+      # 图形验证码
+      image:
+        # 图形验证码字符位数
+        length: 4
+        # 图形验证码图片长度，单位 px
+        width: 148
+        # 图形验证码高度，单位 px
+        height: 36
+        # 图形验证码失效时间
+        expire-in: 60
+        # 以下资源需要验证图形验证码
+        url: /test/img/code
+        # 生成图形验证码的请求 url
+        create-utl: /image/code
+        # 对应图形验证码登录页面 form表单的 action属性
+        login-process-url: /form/login
