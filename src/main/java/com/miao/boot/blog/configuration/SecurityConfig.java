@@ -2,8 +2,8 @@ package com.miao.boot.blog.configuration;
 
 import com.miao.boot.blog.security.SecurityProperties;
 import com.miao.boot.blog.security.WebReactiveUserDetailsServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
@@ -24,10 +24,14 @@ import java.net.URI;
  * @create: 2019-06-06 11:27
  **/
 @EnableWebFluxSecurity
+@EnableReactiveMethodSecurity
 public class SecurityConfig {
 
-    @Autowired
-    private SecurityProperties securityProperties;
+    private final SecurityProperties securityProperties;
+
+    public SecurityConfig(final SecurityProperties securityProperties) {
+        this.securityProperties = securityProperties;
+    }
 
     /**
      * spring security自带的密码加密工具类
@@ -51,29 +55,33 @@ public class SecurityConfig {
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
         return http
-                // 授权配置
-                .authorizeExchange()
-                // 跳过验证 直接访问
-                .pathMatchers(securityProperties.getAnonResourcesUrl()).permitAll()
-                // 需要角色才能访问
-                .pathMatchers("/**").authenticated()
-                .and()
-                .httpBasic()
-                .and()
                 .csrf()
+                    .disable()
+                    .headers()
+                    .frameOptions().disable()
+                    .cache().disable()
                 .and()
-                // 表单登录验证
-                .formLogin()
-                // 自定义登录界面
-                .loginPage(securityProperties.getLoginUrl())
-                // 登录成果处理
-                .authenticationSuccessHandler(new RedirectServerAuthenticationSuccessHandler("/"))
-                // 登录失败处理
-                //.authenticationFailureHandler(null)
+                    // 授权配置
+                    .authorizeExchange()
+                    // 跳过验证 直接访问
+                    .pathMatchers(securityProperties.getAnonResourcesUrl()).permitAll()
+                    // 需要角色才能访问
+                    .anyExchange().authenticated()
                 .and()
-                .logout()
-                .logoutSuccessHandler(logoutSuccessHandler(securityProperties.getLogoutUrl()))
-                .and()
+                    .httpBasic()
+                    .and()
+                    // 表单登录验证
+                    .formLogin()
+                    // 自定义登录界面
+                    .loginPage(securityProperties.getLoginUrl())
+                    // 登录成果处理
+                    .authenticationSuccessHandler(new RedirectServerAuthenticationSuccessHandler("/"))
+                    // 登录失败处理
+                    //.authenticationFailureHandler(null)
+                    .and()
+                    .logout()
+                    .logoutSuccessHandler(logoutSuccessHandler(securityProperties.getLogoutUrl()))
+                    .and()
                 .build()
         ;
     }
