@@ -1,8 +1,10 @@
 package com.miao.boot.blog.configuration;
 
 import com.miao.boot.blog.domain.User;
+import com.miao.boot.blog.handler.UserHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Component;
@@ -38,7 +40,7 @@ public class WebRouters {
                                 .render("login",
                                         req.exchange().getAttributes())
                 )
-                /*.andRoute(RequestPredicates.GET("/bye"),
+                .andRoute(RequestPredicates.GET("/bye"),
                         req -> ServerResponse.ok().render("bye")
                 )
                 .filter((req, resHandler) ->
@@ -66,7 +68,19 @@ public class WebRouters {
                                     return ServerResponse.ok().render("index",
                                             req.exchange().getAttributes());
                                 })
-                )*/
-                ;
+                )
+        ;
+    }
+
+    @Bean
+    public RouterFunction<ServerResponse> webFluxRoutesRegister(final UserHandler userHandler) {
+        return RouterFunctions.nest(
+                // 相当于controller的 路由前缀 @RequestMapping("/user")
+                RequestPredicates.path("/user"),
+                // 相当于@RequestMapping
+                RouterFunctions.route(RequestPredicates.GET("/list"), userHandler::list)
+                        .andRoute(RequestPredicates.POST("/").and(RequestPredicates.accept(MediaType.APPLICATION_JSON_UTF8)), userHandler::create)
+                        .andRoute(RequestPredicates.DELETE("/{id}"), userHandler::delete)
+        );
     }
 }
