@@ -12,6 +12,11 @@ spring:
     # 编码
     encoding: utf-8
     mode: HTML
+    # 默认值 无需配置
+    prefix: classpath:/templates/
+    suffix: .html
+    reactive:
+      max-chunk-size: 8192
 
   data:
     mongodb:
@@ -34,7 +39,6 @@ blog:
       - /**/fonts/**
       - /**/img/**
       - /favicon.ico
-      - /**/*.html
       - /login
       - /logout
       - /echo

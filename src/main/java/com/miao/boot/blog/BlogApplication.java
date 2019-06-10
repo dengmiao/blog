@@ -25,6 +25,6 @@ public class BlogApplication implements ApplicationRunner {
 
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
-
+		log.info("启动完成。。");
 	}
 }

@@ -32,15 +32,16 @@ public class WebRouters {
     }
 
     @Bean
-    public RouterFunction<?> viewRoutes() {
+    public RouterFunction<ServerResponse> viewRoutes() {
         return RouterFunctions
                 .route(RequestPredicates.GET("/login"),
                         req -> ServerResponse
                                 .ok()
+                                .contentType(MediaType.TEXT_HTML)
                                 .render("login",
                                         req.exchange().getAttributes())
                 )
-                .andRoute(RequestPredicates.GET("/bye"),
+                .andRoute(RequestPredicates.GET("/logout"),
                         req -> ServerResponse.ok().render("bye")
                 )
                 .filter((req, resHandler) ->
