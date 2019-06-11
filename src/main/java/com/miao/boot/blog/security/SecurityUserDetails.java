@@ -27,6 +27,9 @@ public class SecurityUserDetails extends User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        // 添加请求权限
+
+        // 添加角色
         return null;
     }
 
