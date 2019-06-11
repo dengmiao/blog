@@ -2,6 +2,7 @@ package com.miao.boot.blog.configuration;
 
 import com.miao.boot.blog.domain.User;
 import com.miao.boot.blog.handler.UserHandler;
+import com.miao.boot.blog.handler.ViewHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
@@ -32,9 +33,10 @@ public class WebRouters {
     }
 
     @Bean
-    public RouterFunction<ServerResponse> viewRoutes() {
+    public RouterFunction<ServerResponse> viewRoutes(final ViewHandler view) {
         return RouterFunctions
                 .route(RequestPredicates.GET("/login"),
+                        /*view::login*/
                         req -> ServerResponse
                                 .ok()
                                 .contentType(MediaType.TEXT_HTML)
@@ -42,9 +44,9 @@ public class WebRouters {
                                         req.exchange().getAttributes())
                 )
                 .andRoute(RequestPredicates.GET("/logout"),
-                        req -> ServerResponse.ok().render("bye")
+                        req -> ServerResponse.ok().render("index")
                 )
-                .filter((req, resHandler) ->
+                /*.filter((req, resHandler) ->
                         req.exchange()
                                 .getAttributeOrDefault(
                                         CsrfToken.class.getName(),
@@ -57,7 +59,7 @@ public class WebRouters {
                                     return resHandler.handle(req);
                                 })
 
-                )
+                )*/
                 .andRoute(RequestPredicates.GET("/"),
                         req -> req.principal()
                                 .ofType(Authentication.class)

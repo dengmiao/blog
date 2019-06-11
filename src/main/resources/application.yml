@@ -34,6 +34,7 @@ blog:
     index-url: /index
     # 免认证静态资源路径
     anon-resources-url:
+      - /static/**
       - /**/*.css
       - /**/*.js
       - /**/fonts/**
@@ -59,6 +60,6 @@ blog:
         # 以下资源需要验证图形验证码
         url: /test/img/code
         # 生成图形验证码的请求 url
-        create-utl: /image/code
+        create-url: /image/code
         # 对应图形验证码登录页面 form表单的 action属性
         login-process-url: /form/login

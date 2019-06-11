@@ -4,7 +4,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.reactive.config.CorsRegistry;
 import org.springframework.web.reactive.config.ResourceHandlerRegistry;
+import org.springframework.web.reactive.config.ViewResolverRegistry;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
+import org.thymeleaf.spring5.view.reactive.ThymeleafReactiveViewResolver;
 
 /**
  * @title: WebFluxConfig
@@ -15,8 +17,14 @@ import org.springframework.web.reactive.config.WebFluxConfigurer;
 @Configuration
 public class WebFluxConfig implements WebFluxConfigurer {
 
+    private final ThymeleafReactiveViewResolver thymeleafReactiveViewResolver;
+
+    public WebFluxConfig(final ThymeleafReactiveViewResolver thymeleafReactiveViewResolver) {
+        this.thymeleafReactiveViewResolver = thymeleafReactiveViewResolver;
+    }
+
     /**
-     * 资源路径映射配置（与Spring MVC 5一样,只是引入的类不同）
+     * 静态资源路径映射配置（与Spring MVC 5一样,只是引入的类不同）
      * @param registry
      */
     @Override
@@ -37,5 +45,14 @@ public class WebFluxConfig implements WebFluxConfigurer {
                 .allowedMethods("*")
                 .maxAge(3600)
                 .exposedHeaders(HttpHeaders.SET_COOKIE);
+    }
+
+    /**
+     * 加入视图解析器
+     * @param registry
+     */
+    @Override
+    public void configureViewResolvers(ViewResolverRegistry registry) {
+        registry.viewResolver(thymeleafReactiveViewResolver);
     }
 }
