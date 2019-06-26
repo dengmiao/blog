@@ -68,6 +68,7 @@ public class WebRouters {
                                 .ofType(Authentication.class)
                                 .flatMap(auth -> {
                                     User user = User.class.cast(auth.getPrincipal());
+                                    System.out.println(user);
                                     req.exchange()
                                             .getAttributes()
                                             .putAll(Collections.singletonMap("user", user));
