@@ -17,9 +17,10 @@
     <meta name="format-detection" content="telephone=no">
     <link rel="shortcut icon" th:href="@{/static/favicon.ico}" type="image/x-icon">
     <!-- 引入css -->
-    <link rel="stylesheet" th:href="@{/static/lib/bootstrap-4.0.0/css/bootstrap.min.css}" media="all">
     <link rel="stylesheet" th:href="@{/static/lib/font-awesome-4.7.0/css/font-awesome.min.css}" media="all">
-    <link rel="stylesheet" th:href="@{/static/lib/layui-2.5.4/css/layui.css}" media="all">
+    <link rel="stylesheet" th:href="@{/static/lib/layui/css/layui.css}" media="all">
+    <link rel="stylesheet" th:href="@{/static/css/font.css}">
+    <link rel="stylesheet" th:href="@{/static/css/xadmin.css}">
     <th:block th:if="${link != null}">
         <th:block th:replace="${link}"></th:block>
     </th:block>
@@ -31,8 +32,13 @@
 <body>
     <!-- 引入js -->
     <th:block th:fragment="script">
-        <script th:src="@{/static/lib/bootstrap-4.0.0/js/bootstrap.min.js}" charset="utf-8"></script>
-        <script th:src="@{/static/lib/layui-2.5.4/layui.js}" charset="utf-8"></script>
+        <script th:src="@{/static/lib/layui/layui.js}" charset="utf-8"></script>
+        <script th:src="@{/static/js/xadmin.js}" charset="utf-8"></script>
+        <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+        <!--[if lt IE 9]>
+            <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+            <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
     </th:block>
 </body>
 </html>

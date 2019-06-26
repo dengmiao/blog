@@ -28,18 +28,18 @@ public class UserReactiveRepositoryTests {
 
     @Test
     public void add() {
-    userReactiveRepository
-        .save(
-            new User()
-                .setUsername("admin")
-                .setEmail("admin@163.com")
-                .setStatus(1)
-                .setRealName("超级管理员")
-                .setPassword(passwordEncoder.encode("123456")))
-        .map(b -> {
-            System.out.println(b.getId());
-            return b;
-        });
+        userReactiveRepository
+            .save(
+                new User()
+                    .setUsername("admin")
+                    .setEmail("admin@163.com")
+                    .setStatus(1)
+                    .setRealName("超级管理员")
+                    .setPassword(passwordEncoder.encode("123456")))
+            .map(b -> {
+                System.out.println(b.getId());
+                return b;
+            });
     }
 
     @Test

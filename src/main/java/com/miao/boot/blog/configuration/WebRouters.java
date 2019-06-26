@@ -46,6 +46,9 @@ public class WebRouters {
                 .andRoute(RequestPredicates.GET("/logout"),
                         req -> ServerResponse.ok().render("index")
                 )
+                .andRoute(RequestPredicates.GET("/welcome"),
+                        req -> ServerResponse.ok().render("welcome")
+                )
                 /*.filter((req, resHandler) ->
                         req.exchange()
                                 .getAttributeOrDefault(
