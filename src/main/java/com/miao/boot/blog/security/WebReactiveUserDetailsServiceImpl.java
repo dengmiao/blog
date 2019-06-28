@@ -22,10 +22,6 @@ public class WebReactiveUserDetailsServiceImpl implements ReactiveUserDetailsSer
     @Override
     public Mono<UserDetails> findByUsername(final String username) {
         return userReactiveService.findByUsername(username)
-                .map(u -> {
-                    System.out.println(u.getId());
-                    return u;
-                })
                 .flatMap(u -> Mono.just(new SecurityUserDetails(u)));
     }
 }
