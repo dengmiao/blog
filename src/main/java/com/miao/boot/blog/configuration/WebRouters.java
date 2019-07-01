@@ -1,6 +1,8 @@
 package com.miao.boot.blog.configuration;
 
 import com.miao.boot.blog.domain.User;
+import com.miao.boot.blog.handler.CommonHandler;
+import com.miao.boot.blog.handler.PermissionHandler;
 import com.miao.boot.blog.handler.UserHandler;
 import com.miao.boot.blog.handler.ViewHandler;
 import org.springframework.context.annotation.Bean;
@@ -80,14 +82,26 @@ public class WebRouters {
     }
 
     @Bean
-    public RouterFunction<ServerResponse> webFluxRoutesRegister(final UserHandler userHandler) {
-        return RouterFunctions.nest(
+    public RouterFunction<ServerResponse> webFluxRoutesRegister(final CommonHandler commonHandler,
+                                                                final UserHandler userHandler,
+                                                                final PermissionHandler permissionHandler) {
+        /*return RouterFunctions.nest(
                 // 相当于controller的 路由前缀 @RequestMapping("/user")
                 RequestPredicates.path("/user"),
                 // 相当于@RequestMapping
                 RouterFunctions.route(RequestPredicates.GET("/list"), userHandler::list)
                         .andRoute(RequestPredicates.POST("/").and(RequestPredicates.accept(MediaType.APPLICATION_JSON_UTF8)), userHandler::create)
                         .andRoute(RequestPredicates.DELETE("/{id}"), userHandler::delete)
-        );
+        );*/
+        return RouterFunctions.route(RequestPredicates.GET("/logout123"), commonHandler::logout)
+                // user相关
+                .andRoute(RequestPredicates.GET("/user/list"), userHandler::list)
+                .andRoute(RequestPredicates.POST("/user/").and(RequestPredicates.accept(MediaType.APPLICATION_JSON_UTF8)), userHandler::create)
+                .andRoute(RequestPredicates.DELETE("/user/{id}"), userHandler::delete)
+                .andRoute(RequestPredicates.PUT("/user/{id}").and(RequestPredicates.accept(MediaType.APPLICATION_JSON_UTF8)), userHandler::update)
+                .andRoute(RequestPredicates.GET("/user/{id}"), userHandler::retrieve)
+                // permission相关
+                .andRoute(RequestPredicates.POST("/permission/"), permissionHandler::create)
+                ;
     }
 }
