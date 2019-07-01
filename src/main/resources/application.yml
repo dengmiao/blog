@@ -24,6 +24,10 @@ spring:
 
 # 自定义配置
 blog:
+  project:
+    name: blog
+    version: v1.0.0 Alpha
+    poweredBy: dengmiao
   # 安全认证相关
   security:
     # 登入
