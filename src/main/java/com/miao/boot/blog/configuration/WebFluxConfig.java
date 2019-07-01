@@ -1,7 +1,11 @@
 package com.miao.boot.blog.configuration;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.reactive.CorsWebFilter;
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 import org.springframework.web.reactive.config.CorsRegistry;
 import org.springframework.web.reactive.config.ResourceHandlerRegistry;
 import org.springframework.web.reactive.config.ViewResolverRegistry;
@@ -45,6 +49,27 @@ public class WebFluxConfig implements WebFluxConfigurer {
                 .allowedMethods("*")
                 .maxAge(3600)
                 .exposedHeaders(HttpHeaders.SET_COOKIE);
+    }
+
+    private CorsConfiguration buildConfig() {
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.addAllowedOrigin("*");
+        corsConfiguration.addAllowedHeader("*");
+        corsConfiguration.addAllowedMethod("*");
+        corsConfiguration.addExposedHeader(HttpHeaders.SET_COOKIE);
+        return corsConfiguration;
+    }
+
+    /**
+     * 跨域过滤器
+     *
+     * @return
+     */
+    @Bean
+    public CorsWebFilter corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", buildConfig());
+        return new CorsWebFilter(source);
     }
 
     /**
