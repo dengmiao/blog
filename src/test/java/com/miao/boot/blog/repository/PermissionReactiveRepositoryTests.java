@@ -41,7 +41,7 @@ public class PermissionReactiveRepositoryTests {
             return b;
         });*/
 
-        webTestClient.post().uri("/user/")
+        webTestClient.post().uri("/permission/")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .body(Mono.just(permission), Permission.class)
