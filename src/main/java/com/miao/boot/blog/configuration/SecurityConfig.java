@@ -80,7 +80,8 @@ public class SecurityConfig {
                     //.authenticationFailureHandler(null)
                     .and()
                     .logout()
-                    .logoutSuccessHandler(logoutSuccessHandler(securityProperties.getLogoutUrl()))
+                    .logoutUrl(securityProperties.getLogoutUrl())
+                    .logoutSuccessHandler(logoutSuccessHandler(securityProperties.getLoginUrl()))
                     .and()
                 .build()
         ;
