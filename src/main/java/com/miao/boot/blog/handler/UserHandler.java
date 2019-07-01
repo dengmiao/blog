@@ -2,7 +2,11 @@ package com.miao.boot.blog.handler;
 
 import com.miao.boot.blog.domain.User;
 import com.miao.boot.blog.repository.UserReactiveRepository;
+import com.miao.boot.blog.vo.Result;
+import org.springframework.beans.BeanUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
@@ -48,11 +52,24 @@ public class UserHandler {
                 .switchIfEmpty(ServerResponse.notFound().build());
     }
 
-    public void update() {
-
+    public Mono<ServerResponse> update(ServerRequest request) {
+        String id = request.pathVariable("id");
+        Mono<User> user = request.bodyToMono(User.class);
+        // 数据校验
+        return this.userReactiveRepository.findById(id)
+                .flatMap(u -> {
+                    // 数据复制
+                    BeanUtils.copyProperties(user, u);
+                    return this.userReactiveRepository.save(u);
+                })
+                .map(u -> new ResponseEntity<>(Result.ok(u), HttpStatus.OK))
+                .defaultIfEmpty(new ResponseEntity(Result.error(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()), HttpStatus.NOT_FOUND));
     }
 
-    public void retrieve() {
-
+    public Mono<ServerResponse> retrieve(ServerRequest request) {
+        String id = request.pathVariable("id");
+        return this.userReactiveRepository.findById(id)
+                .map(u -> new ResponseEntity<>(Result.ok(u), HttpStatus.OK))
+                .defaultIfEmpty(new ResponseEntity(Result.error(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()), HttpStatus.NOT_FOUND));
     }
 }
