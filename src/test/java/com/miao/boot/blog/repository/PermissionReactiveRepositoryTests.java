@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -27,19 +28,13 @@ public class PermissionReactiveRepositoryTests {
     private PermissionReactiveRepository permissionReactiveRepository;
 
     @Test
-    public void insert() {
+    public void create() {
         Permission permission = new Permission()
                 .setPid("0")
                 .setName("test")
                 .setIcon("&#xe6b8;")
                 .setType("0")
                 .setRouting("");
-        /*permissionReactiveRepository.save(
-                permission
-        ).map(b -> {
-            System.out.println(b.getId());
-            return b;
-        });*/
 
         webTestClient.post().uri("/permission/")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -51,6 +46,12 @@ public class PermissionReactiveRepositoryTests {
                 .expectBody()
                 .jsonPath("$.id").isNotEmpty()
                 .jsonPath("$.name").isEqualTo("test");
+    }
+
+    @Test
+    public void queryList() {
+        Flux<Permission> permissionFlux = permissionReactiveRepository.findAll();
+        System.out.println(permissionFlux);
     }
 
 }
