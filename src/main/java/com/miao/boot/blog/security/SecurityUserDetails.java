@@ -1,11 +1,17 @@
 package com.miao.boot.blog.security;
 
+import com.miao.boot.blog.domain.Role;
 import com.miao.boot.blog.domain.User;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @title: SecurityUserDetails
@@ -18,20 +24,25 @@ public class SecurityUserDetails extends User implements UserDetails {
 
     public SecurityUserDetails(User user) {
         if(user!=null) {
-            this.setId(user.getId());
-            this.setUsername(user.getUsername());
-            this.setPassword(user.getPassword());
-            this.setStatus(user.getStatus());
-            this.setRealName(user.getRealName());
+            BeanUtils.copyProperties(user, this);
         }
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        final List<GrantedAuthority> authorityList = new ArrayList<>();
+        // 用户持有的角色集合
+        Set<Role> roleSet = this.getRoleList();
+        if(roleSet != null && roleSet.size() != 0) {
+            roleSet.forEach(item -> {
+                if(item != null) {
+                    authorityList.add(new SimpleGrantedAuthority(item.getCode()));
+                }
+            });
+        }
         // 添加请求权限
 
-        // 添加角色
-        return null;
+        return authorityList;
     }
 
     @Override
