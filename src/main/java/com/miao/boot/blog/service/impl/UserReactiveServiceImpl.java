@@ -47,14 +47,17 @@ public class UserReactiveServiceImpl implements UserReactiveService {
         Map<String, Role> roleMap = new HashMap<>();
         final Flux<Role> roleFlux =  roleReactiveRepository.findAll();
         roleFlux.filter(role -> role.getId().equals("1"));
+        roleFlux.doOnComplete(() -> System.out.println("asdasdasdasd"));
         /*Map<String, Role> roleMap = roleReactiveRepository.findAll().collectList().block()
                 .stream().collect(Collectors.toMap(role -> role.getId(), role -> role));*/
-        return userReactiveRepository.findUserByUsername(username).flatMap(user -> {
+        Mono<User> userMono = userReactiveRepository.findUserByUsername(username);
+        userMono.flatMap(user -> {
             // 用户所持有的角色对象集合
             Set<Role> roleSet = user.getRoles().stream().map(id -> roleMap.get(id)).collect(Collectors.toSet());
             user.setRoleList(roleSet);
             log.info("角色: {}", roleSet.size());
             return Mono.just(user);
         });
+        return userMono;
     }
 }
