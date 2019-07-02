@@ -56,14 +56,16 @@ public class UserHandler {
         String id = request.pathVariable("id");
         Mono<User> user = request.bodyToMono(User.class);
         // 数据校验
+
         return this.userReactiveRepository.findById(id)
                 .flatMap(u -> {
                     // 数据复制
                     BeanUtils.copyProperties(user, u);
-                    return this.userReactiveRepository.save(u);
+                    System.out.println(">>>"+user);
+                    System.out.println(">>>"+u);
+                    return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON_UTF8).body(this.userReactiveRepository.save(u), User.class);
                 })
-                .map(u -> new ResponseEntity<>(Result.ok(u), HttpStatus.OK))
-                .defaultIfEmpty(new ResponseEntity(Result.error(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()), HttpStatus.NOT_FOUND));
+                ;
     }
 
     public Mono<ServerResponse> retrieve(ServerRequest request) {
