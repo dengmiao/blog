@@ -11,9 +11,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -43,21 +41,37 @@ public class UserReactiveServiceImpl implements UserReactiveService {
 
     @Override
     public Mono<User> findByUsername(String username) {
-        // 获取所有角色并转换为id为key的map 备用 可缓存
-        Map<String, Role> roleMap = new HashMap<>();
+        Map<String, Role> roleMap = new HashMap<>(16);
+        // 需要缓存一下
         final Flux<Role> roleFlux =  roleReactiveRepository.findAll();
-        roleFlux.filter(role -> role.getId().equals("1"));
-        roleFlux.doOnComplete(() -> System.out.println("asdasdasdasd"));
-        /*Map<String, Role> roleMap = roleReactiveRepository.findAll().collectList().block()
+        roleFlux.map(role -> {
+            roleMap.put(role.getId(), role);
+            return role;
+        }).subscribe();// 不知道合适不 不让消费 哈哈 不理解reactor
+        /*// 获取所有角色并转换为id为key的map 备用 可缓存
+        Map<String, Role> roleMap = roleReactiveRepository.findAll().collectList().block()
                 .stream().collect(Collectors.toMap(role -> role.getId(), role -> role));*/
-        Mono<User> userMono = userReactiveRepository.findUserByUsername(username);
-        userMono.flatMap(user -> {
+        /*Mono<User> userMono = userReactiveRepository.findUserByUsername(username);*/
+
+        return userReactiveRepository.findUserByUsername(username).flatMap(user -> {
             // 用户所持有的角色对象集合
-            Set<Role> roleSet = user.getRoles().stream().map(id -> roleMap.get(id)).collect(Collectors.toSet());
-            user.setRoleList(roleSet);
-            log.info("角色: {}", roleSet.size());
+            Set<Role> roleSet1 = user.getRoles().stream().map(id -> roleMap.get(id)).collect(Collectors.toSet());
+            user.setRoleList(roleSet1);
+            /*List<String> roles = user.getRoles();
+            Set<Role> roleSet = new HashSet<>();
+            roleFlux.reduce(roleSet, (rt, item) -> {
+                if(roles != null && roles.size() != 0 && roles.indexOf(item.getId()) != -1) {
+                    rt.add(item);
+                }
+                return rt;
+            }).map(r -> {
+                user.setRoleList(r);
+                log.info("角色: {}", r.size());
+                return r;
+            }).subscribe();*/
             return Mono.just(user);
-        });
-        return userMono;
+        })
+        //.log()
+        ;
     }
 }
