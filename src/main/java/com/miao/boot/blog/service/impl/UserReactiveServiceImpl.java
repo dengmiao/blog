@@ -67,6 +67,7 @@ public class UserReactiveServiceImpl implements UserReactiveService {
             roleSet.forEach(item -> permissions.addAll(item.getPermissions()));
             // 用户持有角色对应的权限集合 并集
             List<Permission> permissionList = permissions.stream().map(id -> permissionMap.get(id)).collect(Collectors.toList());
+            permissionList.sort(Comparator.comparing(p -> p.getSort()));
             user.setPermissionList(permissionList);
             return Mono.just(user);
         })

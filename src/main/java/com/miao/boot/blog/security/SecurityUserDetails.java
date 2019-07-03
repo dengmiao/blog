@@ -1,5 +1,6 @@
 package com.miao.boot.blog.security;
 
+import cn.hutool.json.JSONUtil;
 import com.miao.boot.blog.domain.Permission;
 import com.miao.boot.blog.domain.Role;
 import com.miao.boot.blog.domain.User;
@@ -10,6 +11,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @title: SecurityUserDetails
@@ -48,6 +50,11 @@ public class SecurityUserDetails extends User implements UserDetails {
                 authorityList.add(new SimpleGrantedAuthority(item.getName()));
             }
         });
+
+        List<Permission> root = permissionList.stream()
+                //.sorted(Comparator.comparing(Permission::getSort))
+                .filter(item -> "0".equals(item.getPid())).collect(Collectors.toList());
+        System.out.println(JSONUtil.formatJsonStr(JSONUtil.toJsonStr(recursiveRec(root))));
         return authorityList;
     }
 
@@ -69,5 +76,18 @@ public class SecurityUserDetails extends User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    private List<Permission> recursiveRec(List<Permission> list) {
+        return list.stream().map(item -> {
+            List<Permission> children = this.getPermissionList().stream()
+                    //.sorted(Comparator.comparing(Permission::getSort))
+                    .filter(i -> i.getPid().equals(item.getId())).collect(Collectors.toList());
+            if(children != null && children.size() > 0) {
+                recursiveRec(children);
+            }
+            item.setChildren(children);
+            return item;
+        }).collect(Collectors.toList());
     }
 }
