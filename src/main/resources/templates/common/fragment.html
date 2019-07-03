@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+    <!-- 左侧菜单模块 -->
+    <th:block th:fragment="menu(menus)">
+        <th:block th:each="p : ${menus}">
+            <li>
+                <a th:attr="href='javascript:;'"><!-- 有子菜单 href="javascript:;" --><!-- 无子菜单 onclick="xadmin.add_tab()" -->
+                    <i th:class="${p.children.size()>0} ? 'iconfont left-nav-li' : 'iconfont'" lay-tips="会员管理" th:utext="${p.icon}"></i>
+                    <cite th:text="${p.name}">会员管理</cite>
+                    <i th:if="${p.children.size()} > 0" class="iconfont nav_right">&#xe697;</i>
+                    <ul th:if="${p.children.size()} > 0" class="sub-menu">
+                        <th:block th:unless="${#lists.isEmpty(p.children)}" th:include="this::menu(${p.children})" />
+                    </ul>
+                </a>
+            </li>
+        </th:block>
+    </th:block>
+</body>
+</html>

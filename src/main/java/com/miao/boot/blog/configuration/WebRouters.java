@@ -78,6 +78,7 @@ public class WebRouters {
                                 .flatMap(auth -> {
                                     User user = User.class.cast(auth.getPrincipal());
                                     List<Permission> resource = user.getPermissionList().stream()
+                                            .filter(p -> p != null)
                                             .sorted(Comparator.comparing(p -> p.getSort())).collect(Collectors.toList());
                                     List<Permission> root = resource.stream()
                                             .filter(item -> "0".equals(item.getPid())).collect(Collectors.toList());
@@ -95,9 +96,9 @@ public class WebRouters {
     }
 
     @Bean
-    public RouterFunction<ServerResponse> webFluxRoutesRegister(final CommonHandler commonHandler,
-                                                                final UserHandler userHandler,
-                                                                final PermissionHandler permissionHandler) {
+    public RouterFunction<ServerResponse> webFluxRoutesRegister(final CommonHandler commonHandler
+                                                                , final UserHandler userHandler
+                                                                , final PermissionHandler permissionHandler) {
         /*return RouterFunctions.nest(
                 // 相当于controller的 路由前缀 @RequestMapping("/user")
                 RequestPredicates.path("/user"),

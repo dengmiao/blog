@@ -67,11 +67,12 @@
         <div class="left-nav">
             <div id="side-nav">
                 <ul id="nav">
-                    <li>
+                    <th:block th:include="/common/fragment::menu(${menu})"/>
+                    <!--<li>
                         <a href="javascript:;">
                             <i class="iconfont left-nav-li" lay-tips="会员管理">&#xe6b8;</i>
                             <cite>会员管理</cite>
-                            <!-- 有sub-menu -->
+                            &lt;!&ndash; 有sub-menu &ndash;&gt;
                             <i class="iconfont nav_right">&#xe697;</i>
                         </a>
                         <ul class="sub-menu">
@@ -318,7 +319,7 @@
                                     <cite>notice 通知控件</cite></a>
                             </li>
                         </ul>
-                    </li>
+                    </li>-->
                 </ul>
             </div>
         </div>
