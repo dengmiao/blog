@@ -54,4 +54,12 @@ public class PermissionReactiveRepositoryTests {
         System.out.println(permissionFlux);
     }
 
+    @Test
+    public void update() {
+        permissionReactiveRepository.findById("5d19d32acf743e335846a157").flatMap(permission -> {
+            permission.setSort(-1).setIsBlank(1);
+            return this.permissionReactiveRepository.save(permission);
+        }).block();
+    }
+
 }
