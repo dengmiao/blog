@@ -46,6 +46,16 @@ public class Permission {
      */
     private String routing;
 
+    /**
+     * 排序
+     */
+    private Integer sort;
+
+    /**
+     * 新页面打开
+     */
+    private Integer isBlank;
+
     @Transient
     private List<Permission> children;
 }

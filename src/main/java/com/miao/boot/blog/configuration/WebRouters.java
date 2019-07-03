@@ -1,5 +1,8 @@
 package com.miao.boot.blog.configuration;
 
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
+import com.miao.boot.blog.domain.Permission;
 import com.miao.boot.blog.domain.User;
 import com.miao.boot.blog.handler.CommonHandler;
 import com.miao.boot.blog.handler.PermissionHandler;
@@ -18,6 +21,10 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @title: WebRouters
@@ -70,10 +77,16 @@ public class WebRouters {
                                 .ofType(Authentication.class)
                                 .flatMap(auth -> {
                                     User user = User.class.cast(auth.getPrincipal());
-                                    System.out.println(user);
-                                    req.exchange()
-                                            .getAttributes()
-                                            .putAll(Collections.singletonMap("user", user));
+                                    List<Permission> resource = user.getPermissionList().stream()
+                                            .sorted(Comparator.comparing(p -> p.getSort())).collect(Collectors.toList());
+                                    List<Permission> root = resource.stream()
+                                            .filter(item -> "0".equals(item.getPid())).collect(Collectors.toList());
+                                    List<Permission> permissions = recursiveRec(root, resource);
+                                    String json = JSONUtil.formatJsonStr(JSONUtil.toJsonStr(permissions));
+                                    System.out.println("菜单:\n" +json);
+                                    Map<String, Object> attr = req.exchange().getAttributes();
+                                    attr.putAll(Collections.singletonMap("user", user));
+                                    attr.put("menu", permissions);
                                     return ServerResponse.ok().render("index",
                                             req.exchange().getAttributes());
                                 })
@@ -103,5 +116,18 @@ public class WebRouters {
                 // permission相关
                 .andRoute(RequestPredicates.POST("/permission/"), permissionHandler::create)
                 ;
+    }
+
+    private List<Permission> recursiveRec(List<Permission> list, final List<Permission> resource) {
+        return list.stream().map(item -> {
+            List<Permission> children = resource.stream()
+                    //.sorted(Comparator.comparing(Permission::getSort))
+                    .filter(i -> i.getPid().equals(item.getId())).collect(Collectors.toList());
+            if(children != null && children.size() > 0) {
+                recursiveRec(children, resource);
+            }
+            item.setChildren(children);
+            return item;
+        }).collect(Collectors.toList());
     }
 }
