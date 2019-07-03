@@ -3,7 +3,6 @@ package com.miao.boot.blog.repository;
 import com.miao.boot.blog.domain.Permission;
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 import org.springframework.stereotype.Repository;
-import reactor.core.publisher.Flux;
 
 /**
  * @title: PermissionReactiveRepository
@@ -13,11 +12,4 @@ import reactor.core.publisher.Flux;
  **/
 @Repository
 public interface PermissionReactiveRepository extends ReactiveMongoRepository<Permission, String> {
-
-    /**
-     * 按pid查询
-     * @param pid
-     * @return
-     */
-    Flux<Permission> findPermissionsByPid(String pid);
 }
