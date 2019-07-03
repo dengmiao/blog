@@ -1,5 +1,6 @@
 package com.miao.boot.blog.security;
 
+import com.miao.boot.blog.domain.Permission;
 import com.miao.boot.blog.domain.Role;
 import com.miao.boot.blog.domain.User;
 import lombok.extern.slf4j.Slf4j;
@@ -8,10 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @title: SecurityUserDetails
@@ -33,15 +31,23 @@ public class SecurityUserDetails extends User implements UserDetails {
         final List<GrantedAuthority> authorityList = new ArrayList<>();
         // 用户持有的角色集合
         Set<Role> roleSet = this.getRoleList();
+
+        // 获取角色对应权限
+        List<Permission> permissionList = this.getPermissionList();
         if(roleSet != null && roleSet.size() != 0) {
             roleSet.forEach(item -> {
                 if(item != null) {
-                    authorityList.add(new SimpleGrantedAuthority(item.getCode()));
+
                 }
             });
         }
-        // 添加请求权限
 
+        // 添加请求权限
+        permissionList.forEach(item -> {
+            if(item != null) {
+                authorityList.add(new SimpleGrantedAuthority(item.getName()));
+            }
+        });
         return authorityList;
     }
 
