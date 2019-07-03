@@ -2,7 +2,6 @@ package com.miao.boot.blog.service.impl;
 
 import com.miao.boot.blog.domain.Role;
 import com.miao.boot.blog.domain.User;
-import com.miao.boot.blog.repository.PermissionReactiveRepository;
 import com.miao.boot.blog.repository.RoleReactiveRepository;
 import com.miao.boot.blog.repository.UserReactiveRepository;
 import com.miao.boot.blog.service.UserReactiveService;
@@ -28,19 +27,16 @@ public class UserReactiveServiceImpl implements UserReactiveService {
 
     private final RoleReactiveRepository roleReactiveRepository;
 
-    private final PermissionReactiveRepository permissionReactiveRepository;
-
-    public UserReactiveServiceImpl(final UserReactiveRepository userReactiveRepository,
-                                   final RoleReactiveRepository roleReactiveRepository,
-                                   final PermissionReactiveRepository permissionReactiveRepository
+    public UserReactiveServiceImpl(final UserReactiveRepository userReactiveRepository
+                                   ,final RoleReactiveRepository roleReactiveRepository
                                    ) {
         this.userReactiveRepository = userReactiveRepository;
         this.roleReactiveRepository = roleReactiveRepository;
-        this.permissionReactiveRepository = permissionReactiveRepository;
     }
 
     @Override
     public Mono<User> findByUsername(String username) {
+        // id为key的map 备用
         Map<String, Role> roleMap = new HashMap<>(16);
         // 需要缓存一下
         final Flux<Role> roleFlux =  roleReactiveRepository.findAll();
@@ -48,10 +44,6 @@ public class UserReactiveServiceImpl implements UserReactiveService {
             roleMap.put(role.getId(), role);
             return role;
         }).subscribe();// 不知道合适不 不让消费 哈哈 不理解reactor
-        /*// 获取所有角色并转换为id为key的map 备用 可缓存
-        Map<String, Role> roleMap = roleReactiveRepository.findAll().collectList().block()
-                .stream().collect(Collectors.toMap(role -> role.getId(), role -> role));*/
-        /*Mono<User> userMono = userReactiveRepository.findUserByUsername(username);*/
 
         return userReactiveRepository.findUserByUsername(username).flatMap(user -> {
             // 用户所持有的角色对象集合
