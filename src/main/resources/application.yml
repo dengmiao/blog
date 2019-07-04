@@ -6,6 +6,9 @@ logging:
     org.springframework.data.mongodb.core: DEBUG
 
 spring:
+  # 多环境
+  profiles:
+    active: dev
   thymeleaf:
     # 热部署
     cache: false
@@ -17,10 +20,6 @@ spring:
     suffix: .html
     reactive:
       max-chunk-size: 8192
-
-  data:
-    mongodb:
-      uri: mongodb://localhost:27017/blog
 
 # 自定义配置
 blog:
