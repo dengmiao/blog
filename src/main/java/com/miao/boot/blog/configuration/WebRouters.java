@@ -41,9 +41,15 @@ public class WebRouters {
                 .resources("/favicon.**", new ClassPathResource("static/favicon.ico"));
     }
 
+    /**
+     * 视图路由
+     * @param view
+     * @return
+     */
     @Bean
     public RouterFunction<ServerResponse> viewRoutes(final ViewHandler view) {
         return RouterFunctions
+                // 后台登录
                 .route(RequestPredicates.GET("/login"),
                         /*view::login*/
                         req -> ServerResponse
@@ -52,11 +58,138 @@ public class WebRouters {
                                 .render("login",
                                         req.exchange().getAttributes())
                 )
+                // 登出
                 .andRoute(RequestPredicates.GET("/logout"),
-                        req -> ServerResponse.ok().render("index")
+                        req -> ServerResponse.ok().render("login")
                 )
+                // 后台欢迎页
                 .andRoute(RequestPredicates.GET("/welcome"),
                         req -> ServerResponse.ok().render("welcome")
+                )
+                // 会员管理/统计页面
+                .andRoute(
+                        RequestPredicates.GET("/admin/memory/welcome1.html"),
+                        req -> ServerResponse.ok().render("admin/memory/welcome1.html")
+                )
+                // 会员管理/静态表格
+                .andRoute(
+                        RequestPredicates.GET("/admin/memory/member-list.html"),
+                        req -> ServerResponse.ok().render("admin/memory/member-list.html")
+                )
+                // 会员管理/动态表格
+                .andRoute(
+                        RequestPredicates.GET("/admin/memory/member-list1.html"),
+                        req -> ServerResponse.ok().render("admin/memory/member-list1.html")
+                )
+                // 会员管理/会员删除
+                .andRoute(
+                        RequestPredicates.GET("/admin/memory/member-del.html"),
+                        req -> ServerResponse.ok().render("admin/memory/member-del.html")
+                )
+                // 订单管理/订单列表
+                .andRoute(
+                        RequestPredicates.GET("/admin/order/order-list.html"),
+                        req -> ServerResponse.ok().render("admin/order/order-list.html")
+                )
+                // 订单管理/订单列表1
+                .andRoute(
+                        RequestPredicates.GET("/admin/order/order-list1.html"),
+                        req -> ServerResponse.ok().render("admin/order/order-list1.html")
+                )
+                // 分类管理/多级分类
+                .andRoute(
+                        RequestPredicates.GET("/admin/cate/cate.html"),
+                        req -> ServerResponse.ok().render("admin/cate/cate.html")
+                )
+                // 城市联动/三级地区联动
+                .andRoute(
+                        RequestPredicates.GET("/admin/city/city.html"),
+                        req -> ServerResponse.ok().render("admin/city/city.html")
+                )
+                // 管理员管理/管理员列表
+                .andRoute(
+                        RequestPredicates.GET("/admin/admin/admin-list.html"),
+                        req -> ServerResponse.ok().render("admin/admin/admin-list.html")
+                )
+                // 管理员管理/角色管理
+                .andRoute(
+                        RequestPredicates.GET("/admin/admin/admin-role.html"),
+                        req -> ServerResponse.ok().render("admin/admin/admin-role.html")
+                )
+                // 管理员管理/权限分类
+                .andRoute(
+                        RequestPredicates.GET("/admin/admin/admin-cate.html"),
+                        req -> ServerResponse.ok().render("admin/admin/admin-cate.html")
+                )
+                // 管理员管理/权限管理
+                .andRoute(
+                        RequestPredicates.GET("/admin/admin/admin-rule.html"),
+                        req -> ServerResponse.ok().render("admin/admin/admin-rule.html")
+                )
+                // 系统统计/折线图
+                .andRoute(
+                        RequestPredicates.GET("/admin/chart/echarts1.html"),
+                        req -> ServerResponse.ok().render("admin/chart/echarts1.html")
+                )
+                // 系统统计/折线图
+                .andRoute(
+                        RequestPredicates.GET("/admin/chart/echarts2.html"),
+                        req -> ServerResponse.ok().render("admin/chart/echarts2.html")
+                )
+                // 系统统计/地图
+                .andRoute(
+                        RequestPredicates.GET("/admin/chart/echarts3.html"),
+                        req -> ServerResponse.ok().render("admin/chart/echarts3.html")
+                )
+                // 系统统计/饼图
+                .andRoute(
+                        RequestPredicates.GET("/admin/chart/echarts4.html"),
+                        req -> ServerResponse.ok().render("admin/chart/echarts4.html")
+                )
+                // 系统统计/雷达图
+                .andRoute(
+                        RequestPredicates.GET("/admin/chart/echarts5.html"),
+                        req -> ServerResponse.ok().render("admin/chart/echarts5.html")
+                )
+                // 系统统计/K线图
+                .andRoute(
+                        RequestPredicates.GET("/admin/chart/echarts6.html"),
+                        req -> ServerResponse.ok().render("admin/chart/echarts6.html")
+                )
+                // 系统统计/热力图
+                .andRoute(
+                        RequestPredicates.GET("/admin/chart/echarts7.html"),
+                        req -> ServerResponse.ok().render("admin/chart/echarts7.html")
+                )
+                // 系统统计/仪表图
+                .andRoute(
+                        RequestPredicates.GET("/admin/chart/echarts8.html"),
+                        req -> ServerResponse.ok().render("admin/chart/echarts8.html")
+                )
+                // 图标字体/图标对应字体
+                .andRoute(
+                        RequestPredicates.GET("/admin/icon/unicode.html"),
+                        req -> ServerResponse.ok().render("admin/icon/unicode.html")
+                )
+                // 其他页面/登录页面
+                .andRoute(
+                        RequestPredicates.GET("/admin/other/login.html"),
+                        req -> ServerResponse.ok().render("admin/other/login.html")
+                )
+                // 其他页面/错误页面
+                .andRoute(
+                        RequestPredicates.GET("/admin/other/error.html"),
+                        req -> ServerResponse.ok().render("admin/other/error.html")
+                )
+                // 其他页面/实例页面
+                .andRoute(
+                        RequestPredicates.GET("/admin/other/demo.html"),
+                        req -> ServerResponse.ok().render("admin/other/demo.html")
+                )
+                // 其他页面/更新日志
+                .andRoute(
+                        RequestPredicates.GET("/admin/other/log.html"),
+                        req -> ServerResponse.ok().render("admin/other/log.html")
                 )
                 /*.filter((req, resHandler) ->
                         req.exchange()
@@ -72,6 +205,7 @@ public class WebRouters {
                                 })
 
                 )*/
+                // 首页
                 .andRoute(RequestPredicates.GET("/"),
                         req -> req.principal()
                                 .ofType(Authentication.class)
@@ -84,7 +218,7 @@ public class WebRouters {
                                             .filter(item -> "0".equals(item.getPid())).collect(Collectors.toList());
                                     List<Permission> permissions = recursiveRec(root, resource);
                                     String json = JSONUtil.formatJsonStr(JSONUtil.toJsonStr(permissions));
-                                    System.out.println("菜单:\n" +json);
+                                    System.out.println(/*"菜单:\n" +json*/);
                                     Map<String, Object> attr = req.exchange().getAttributes();
                                     attr.putAll(Collections.singletonMap("user", user));
                                     attr.put("menu", permissions);
@@ -95,6 +229,13 @@ public class WebRouters {
         ;
     }
 
+    /**
+     * 方法路由
+     * @param commonHandler
+     * @param userHandler
+     * @param permissionHandler
+     * @return
+     */
     @Bean
     public RouterFunction<ServerResponse> webFluxRoutesRegister(final CommonHandler commonHandler
                                                                 , final UserHandler userHandler
@@ -119,6 +260,12 @@ public class WebRouters {
                 ;
     }
 
+    /**
+     * 递归处理菜单资源树结构
+     * @param list
+     * @param resource
+     * @return
+     */
     private List<Permission> recursiveRec(List<Permission> list, final List<Permission> resource) {
         return list.stream().map(item -> {
             List<Permission> children = resource.stream()
