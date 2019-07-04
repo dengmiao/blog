@@ -11,7 +11,7 @@
  Target Server Version : 40002
  File Encoding         : 65001
 
- Date: 03/07/2019 17:50:42
+ Date: 04/07/2019 15:16:14
 */
 
 
@@ -50,7 +50,7 @@ db.getCollection("permission").insert([ {
     name: "统计页面",
     icon: "&#xe6a7;",
     type: NumberLong("0"),
-    routing: "welcome1.html",
+    routing: "/admin/memory/welcome1.html",
     _class: "com.miao.boot.blog.domain.Permission",
     sort: 1
 } ]);
@@ -59,7 +59,7 @@ db.getCollection("permission").insert([ {
     pid: "5d1ab94537510000a1001aa2",
     name: "会员列表(静态表格)",
     icon: "&#xe6a7;",
-    routing: "member-list.html",
+    routing: "/admin/memory/member-list.html",
     type: NumberLong("0"),
     _class: "com.miao.boot.blog.domain.Permission",
     sort: 2
@@ -70,7 +70,7 @@ db.getCollection("permission").insert([ {
     type: NumberLong("0"),
     name: "会员列表(动态表格)",
     icon: "&#xe6a7;",
-    routing: "member-list1.html",
+    routing: "/admin/memory/member-list1.html",
     _class: "com.miao.boot.blog.domain.Permission",
     sort: 3
 } ]);
@@ -80,7 +80,7 @@ db.getCollection("permission").insert([ {
     type: NumberLong("0"),
     name: "会员删除",
     icon: "&#xe6a7;",
-    routing: "member-del.html",
+    routing: "/admin/memory/member-del.html",
     _class: "com.miao.boot.blog.domain.Permission",
     sort: 4
 } ]);
@@ -99,7 +99,7 @@ db.getCollection("permission").insert([ {
     name: "会员删除",
     icon: "&#xe6a7;",
     type: NumberLong("0"),
-    routing: "member-del.html",
+    routing: "/admin/memory/member-del.html",
     _class: "com.miao.boot.blog.domain.Permission",
     sort: 0
 } ]);
@@ -109,7 +109,7 @@ db.getCollection("permission").insert([ {
     name: "等级管理",
     icon: "&#xe6a7;",
     type: NumberLong("0"),
-    routing: "member-list1.html",
+    routing: "/admin/memory/member-list1.html",
     _class: "com.miao.boot.blog.domain.Permission",
     sort: 1
 } ]);
@@ -127,7 +127,7 @@ db.getCollection("permission").insert([ {
     pid: "5d1abc7237510000a1001aaa",
     name: "订单列表",
     icon: "&#xe6a7;",
-    routing: "order-list.html",
+    routing: "/admin/order/order-list.html",
     type: NumberLong("0"),
     _class: "com.miao.boot.blog.domain.Permission",
     sort: 0
@@ -138,7 +138,7 @@ db.getCollection("permission").insert([ {
     name: "订单列表1",
     icon: "&#xe6a7;",
     type: NumberLong("0"),
-    routing: "order-list1.html",
+    routing: "/admin/order/order-list1.html",
     _class: "com.miao.boot.blog.domain.Permission",
     sort: 1
 } ]);
@@ -157,7 +157,7 @@ db.getCollection("permission").insert([ {
     name: "多级分类",
     icon: "&#xe6a7;",
     type: NumberLong("0"),
-    routing: "cate.html",
+    routing: "/admin/cate/cate.html",
     _class: "com.miao.boot.blog.domain.Permission",
     sort: 0
 } ]);
@@ -176,7 +176,7 @@ db.getCollection("permission").insert([ {
     name: "三级地区联动",
     icon: "&#xe6a7;",
     type: NumberLong("0"),
-    routing: "city.html",
+    routing: "/admin/city/city.html",
     _class: "com.miao.boot.blog.domain.Permission",
     sort: 0
 } ]);
@@ -195,37 +195,37 @@ db.getCollection("permission").insert([ {
     name: "管理员列表",
     icon: "&#xe6a7;",
     type: NumberLong("0"),
-    routing: "admin-list.html",
+    routing: "/admin/admin/admin-list.html",
     _class: "com.miao.boot.blog.domain.Permission",
     sort: 0
 } ]);
 db.getCollection("permission").insert([ {
     _id: ObjectId("5d1abe1337510000a1001ab3"),
-    pid: "5d1abded37510000a1001ab2",
+    pid: "5d1abdbd37510000a1001ab1",
     name: "角色管理",
     icon: "&#xe6a7;",
     type: NumberLong("0"),
-    routing: "admin-role.html",
+    routing: "/admin/admin/admin-role.html",
     _class: "com.miao.boot.blog.domain.Permission",
     sort: 1
 } ]);
 db.getCollection("permission").insert([ {
     _id: ObjectId("5d1abe5237510000a1001ab4"),
-    pid: "5d1abe1337510000a1001ab3",
+    pid: "5d1abdbd37510000a1001ab1",
     name: "权限分类",
     icon: "&#xe6a7;",
     type: NumberLong("0"),
-    routing: "admin-cate.html",
+    routing: "/admin/admin/admin-cate.html",
     _class: "com.miao.boot.blog.domain.Permission",
     sort: 2
 } ]);
 db.getCollection("permission").insert([ {
     _id: ObjectId("5d1abe6837510000a1001ab5"),
-    pid: "5d1abe5237510000a1001ab4",
+    pid: "5d1abdbd37510000a1001ab1",
     name: "权限管理",
     icon: "&#xe6a7;",
     type: NumberLong("0"),
-    routing: "admin-rule.html",
+    routing: "/admin/admin/admin-rule.html",
     _class: "com.miao.boot.blog.domain.Permission",
     sort: 3
 } ]);
@@ -243,7 +243,7 @@ db.getCollection("permission").insert([ {
     pid: "5d1abea737510000a1001ab6",
     name: "折线图",
     icon: "&#xe6a7;",
-    routing: "echarts1.html",
+    routing: "/admin/chart/echarts1.html",
     type: NumberLong("0"),
     _class: "com.miao.boot.blog.domain.Permission",
     sort: 0
@@ -254,7 +254,7 @@ db.getCollection("permission").insert([ {
     name: "折线图",
     icon: "&#xe6a7;",
     type: NumberLong("0"),
-    routing: "echarts2.html",
+    routing: "/admin/chart/echarts2.html",
     _class: "com.miao.boot.blog.domain.Permission",
     sort: 1
 } ]);
@@ -262,7 +262,7 @@ db.getCollection("permission").insert([ {
     _id: ObjectId("5d1abf0037510000a1001ab9"),
     pid: "5d1abea737510000a1001ab6",
     name: "地图",
-    routing: "echarts3.html",
+    routing: "/admin/chart/echarts3.html",
     type: NumberLong("0"),
     icon: "&#xe6a7;",
     _class: "com.miao.boot.blog.domain.Permission",
@@ -274,7 +274,7 @@ db.getCollection("permission").insert([ {
     pid: "5d1abea737510000a1001ab6",
     icon: "&#xe6a7;",
     type: NumberLong("0"),
-    routing: "echarts4.html",
+    routing: "/admin/chart/echarts4.html",
     _class: "com.miao.boot.blog.domain.Permission",
     sort: 3
 } ]);
@@ -284,7 +284,7 @@ db.getCollection("permission").insert([ {
     name: "雷达图",
     icon: "&#xe6a7;",
     type: NumberLong("0"),
-    routing: "echarts5.html",
+    routing: "/admin/chart/echarts5.html",
     _class: "com.miao.boot.blog.domain.Permission",
     sort: 4
 } ]);
@@ -294,7 +294,7 @@ db.getCollection("permission").insert([ {
     name: "k线图",
     icon: "&#xe6a7;",
     type: NumberLong("0"),
-    routing: "echarts6.html",
+    routing: "/admin/chart/echarts6.html",
     _class: "com.miao.boot.blog.domain.Permission",
     sort: 5
 } ]);
@@ -304,7 +304,7 @@ db.getCollection("permission").insert([ {
     icon: "&#xe6a7;",
     type: NumberLong("0"),
     name: "热力图",
-    routing: "echarts7.html",
+    routing: "/admin/chart/echarts7.html",
     _class: "com.miao.boot.blog.domain.Permission",
     sort: 6
 } ]);
@@ -314,7 +314,7 @@ db.getCollection("permission").insert([ {
     icon: "&#xe6a7;",
     type: NumberLong("0"),
     name: "仪表图",
-    routing: "echarts8.html",
+    routing: "/admin/chart/echarts8.html",
     _class: "com.miao.boot.blog.domain.Permission",
     sort: 7
 } ]);
@@ -331,7 +331,7 @@ db.getCollection("permission").insert([ {
     _id: ObjectId("5d1abfe137510000a1001ac0"),
     pid: "5d1abfd137510000a1001abf",
     name: "图标对应字体",
-    routing: "unicode.html",
+    routing: "/admin/icon/unicode.html",
     type: NumberLong("0"),
     icon: "&#xe6a7;",
     _class: "com.miao.boot.blog.domain.Permission",
@@ -352,7 +352,7 @@ db.getCollection("permission").insert([ {
     name: "登录页面",
     icon: "&#xe6a7;",
     type: NumberLong("0"),
-    routing: "login.html",
+    routing: "/admin/other/login.html",
     _class: "com.miao.boot.blog.domain.Permission",
     sort: 0,
     isBlank: 1
@@ -362,7 +362,7 @@ db.getCollection("permission").insert([ {
     pid: "5d1ac00637510000a1001ac1",
     name: "错误页面",
     icon: "&#xe6a7;",
-    routing: "error.html",
+    routing: "/admin/other/error.html",
     type: NumberLong("0"),
     _class: "com.miao.boot.blog.domain.Permission",
     sort: 1
@@ -373,7 +373,7 @@ db.getCollection("permission").insert([ {
     name: "示例页面",
     icon: "&#xe6a7;",
     type: NumberLong("0"),
-    routing: "demo.html",
+    routing: "/admin/other/demo.html",
     _class: "com.miao.boot.blog.domain.Permission",
     sort: 2
 } ]);
@@ -381,7 +381,7 @@ db.getCollection("permission").insert([ {
     _id: ObjectId("5d1ac0f537510000a1001ac5"),
     pid: "5d1ac00637510000a1001ac1",
     name: "更新日志",
-    routing: "log.html",
+    routing: "/admin/other/log.html",
     type: NumberLong("0"),
     icon: "&#xe6a7;",
     _class: "com.miao.boot.blog.domain.Permission",
