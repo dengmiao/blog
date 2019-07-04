@@ -9,10 +9,10 @@
                     <i th:class="${p.children.size()>0} ? 'iconfont left-nav-li' : 'iconfont'" lay-tips="会员管理" th:utext="${p.icon}"></i>
                     <cite th:text="${p.name}">会员管理</cite>
                     <i th:if="${p.children.size()} > 0" class="iconfont nav_right">&#xe697;</i>
-                    <ul th:if="${p.children.size()} > 0" class="sub-menu">
-                        <th:block th:unless="${#lists.isEmpty(p.children)}" th:include="this::menu(${p.children})" />
-                    </ul>
                 </a>
+                <ul th:if="${p.children.size()} > 0" class="sub-menu">
+                    <th:block th:unless="${#lists.isEmpty(p.children)}" th:include="this::menu(${p.children})" />
+                </ul>
             </li>
         </th:block>
     </th:block>
