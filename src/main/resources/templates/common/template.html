@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:fragment="header(title, link, style)">
     <th:block th:if="${title == null}">
-        <title>blog</title>
+        <title>springboot博客-Blog1.0.0</title>
     </th:block>
     <th:block th:if="${title != null}">
         <title th:replace="${title}">title</title>

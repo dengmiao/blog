@@ -64,7 +64,14 @@ public class WebRouters {
                 )
                 // 后台欢迎页
                 .andRoute(RequestPredicates.GET("/welcome"),
-                        req -> ServerResponse.ok().render("welcome")
+                        req -> {
+                            Mono<User> userMono = req.principal().ofType(Authentication.class).map(authentication -> {
+                                User user = User.class.cast(authentication.getPrincipal());
+                                return user;
+                            });
+                            req.exchange().getAttributes().put("user", userMono);
+                            return ServerResponse.ok().render("admin/welcome", req.exchange().getAttributes());
+                        }
                 )
                 // 会员管理/统计页面
                 .andRoute(
@@ -222,7 +229,7 @@ public class WebRouters {
                                     Map<String, Object> attr = req.exchange().getAttributes();
                                     attr.putAll(Collections.singletonMap("user", user));
                                     attr.put("menu", permissions);
-                                    return ServerResponse.ok().render("index",
+                                    return ServerResponse.ok().render("admin/index",
                                             req.exchange().getAttributes());
                                 })
                 )
