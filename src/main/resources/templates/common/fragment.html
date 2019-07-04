@@ -4,11 +4,16 @@
     <!-- 左侧菜单模块 -->
     <th:block th:fragment="menu(menus)">
         <th:block th:each="p : ${menus}">
-            <li>
-                <a th:attr="href='javascript:;'"><!-- 有子菜单 href="javascript:;" --><!-- 无子菜单 onclick="xadmin.add_tab()" -->
+            <li th:switch="${not #lists.isEmpty(p.children)}">
+                <a th:case="true" href="javascript:;"><!-- 有子菜单 href="javascript:;" --><!-- 无子菜单 onclick="xadmin.add_tab()" -->
                     <i th:class="${p.children.size()>0} ? 'iconfont left-nav-li' : 'iconfont'" lay-tips="会员管理" th:utext="${p.icon}"></i>
                     <cite th:text="${p.name}">会员管理</cite>
-                    <i th:if="${p.children.size()} > 0" class="iconfont nav_right">&#xe697;</i>
+                    <i th:if="${not #lists.isEmpty(p.children)}" class="iconfont nav_right">&#xe697;</i>
+                </a>
+                <a th:case="false" th:onclick="xadmin.add_tab([[${p.name}]], [[${p.routing}]])"><!-- 有子菜单 href="javascript:;" --><!-- 无子菜单 onclick="xadmin.add_tab()" -->
+                    <i th:class="${p.children.size()>0} ? 'iconfont left-nav-li' : 'iconfont'" lay-tips="会员管理" th:utext="${p.icon}"></i>
+                    <cite th:text="${p.name}">会员管理</cite>
+                    <i th:if="${not #lists.isEmpty(p.children)}" class="iconfont nav_right">&#xe697;</i>
                 </a>
                 <ul th:if="${p.children.size()} > 0" class="sub-menu">
                     <th:block th:unless="${#lists.isEmpty(p.children)}" th:include="this::menu(${p.children})" />
