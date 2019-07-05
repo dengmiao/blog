@@ -21,7 +21,7 @@ import java.util.Set;
 @Accessors(chain = true)
 @NoArgsConstructor
 @Document(collection = "user")
-public class User implements Serializable {
+public class User {
 
     @Id
     private String id;
