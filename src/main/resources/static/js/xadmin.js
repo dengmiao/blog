@@ -1,14 +1,15 @@
 ;!function (win) {
 	"use strict";
-	var doc = document
+	let doc = document
 
 	,Xadmin = function(){
 	    this.v = '2.2'; //版本号
 	}
 
 	Xadmin.prototype.init = function() {
-		var tab_list = this.get_data();
-		for(var i in tab_list){
+		let tab_list = this.get_data();
+        let i
+		for(i in tab_list){
 			this.add_lay_tab(tab_list[i].title,tab_list[i].url,i);
 		}
 		element.tabChange('xbs_tab', i);
@@ -19,9 +20,9 @@
    */
   Xadmin.prototype.end = function() {
 
-    var cate_list = this.get_cate_data();
+    let cate_list = this.get_cate_data();
 
-    for(var i in cate_list){
+    for(let i in cate_list){
       if(cate_list[i]!=null){
         $('.left-nav #nav li').eq(cate_list[i]).click();
       }
@@ -29,10 +30,10 @@
   };
 
 	Xadmin.prototype.add_tab = function (title,url,is_refresh) {
-		var id = md5(url);//md5每个url
+		let id = md5(url);//md5每个url
 
 		//重复点击
-		for (var i = 0; i <$('.x-iframe').length; i++) {
+		for (let i = 0; i <$('.x-iframe').length; i++) {
             if($('.x-iframe').eq(i).attr('tab-id')==id){
                 element.tabChange('xbs_tab', id);
                 if(is_refresh)
@@ -52,7 +53,7 @@
     if(id){
       console.log(88);
     }else{
-      var id = $(window.frameElement).attr('tab-id');
+      let id = $(window.frameElement).attr('tab-id');
       parent.element.tabDelete('xbs_tab', id);
     }
   }
@@ -75,18 +76,18 @@
 	 */
 	Xadmin.prototype.open = function (title,url,w,h,full) {
 		if (title == null || title == '') {
-	        var title=false;
+	        let title=false;
 	    };
 	    if (url == null || url == '') {
-	        var url="404.html";
+	        let url="404.html";
 	    };
 	    if (w == null || w == '') {
-	        var w=($(window).width()*0.9);
+	        let w=($(window).width()*0.9);
 	    };
 	    if (h == null || h == '') {
-	        var h=($(window).height() - 50);
+	        let h=($(window).height() - 50);
 	    };
-	    var index = layer.open({
+	    let index = layer.open({
 	        type: 2,
 	        area: [w+'px', h +'px'],
 	        fix: false, //不固定
@@ -105,7 +106,7 @@
 	 * @return {[type]} [description]
 	 */
 	Xadmin.prototype.close = function() {
-		var index = parent.layer.getFrameIndex(window.name);
+		let index = parent.layer.getFrameIndex(window.name);
     	parent.layer.close(index);
 	};
   /**
@@ -184,7 +185,7 @@
 	Xadmin.prototype.del_other_data = function(id) {
 		if(typeof is_remember!="undefined")
         	return false;
-		var tab_list = this.get_data();
+		let tab_list = this.get_data();
 
 		layui.data('tab_list',null);
 
@@ -208,7 +209,7 @@ layui.use(['layer','element','jquery'],function() {
 
     //关闭tab清除记忆
     element.on('tabDelete(xbs_tab)', function(data){
-        var id  = $(this).parent().attr('lay-id');
+        let id  = $(this).parent().attr('lay-id');
         xadmin.del_data(id);
     });
     //左侧菜单
@@ -261,10 +262,10 @@ layui.use(['layer','element','jquery'],function() {
         }
         event.stopPropagation(); 
     })
-    var left_tips_index = null;
+    let left_tips_index = null;
     $('.left-nav #nav').on('mouseenter', '.left-nav-li', function(event) {
       if($('.left-nav').css('width')!='220px'){
-        var tips  = $(this).attr('lay-tips');
+        let tips  = $(this).attr('lay-tips');
         left_tips_index = layer.tips(tips, $(this));
       }
     })
@@ -303,18 +304,18 @@ layui.use(['layer','element','jquery'],function() {
     });
 
     $(".layui-tab-title").on('contextmenu', 'li', function(event) {
-        var tab_left = $(this).position().left;
-        var tab_width = $(this).width();
-        var left = $(this).position().top;
-        var this_index = $(this).attr('lay-id');
+        let tab_left = $(this).position().left;
+        let tab_width = $(this).width();
+        let left = $(this).position().top;
+        let this_index = $(this).attr('lay-id');
         $('#tab_right').css({'left':tab_left+tab_width/2}).show().attr('lay-id',this_index);
         $('#tab_show').show();
         return false;
     });
 
     $('#tab_right').on('click', 'dd', function(event) {
-        var data_type = $(this).attr('data-type');
-        var lay_id = $(this).parents('#tab_right').attr('lay-id');
+        let data_type = $(this).attr('data-type');
+        let lay_id = $(this).parents('#tab_right').attr('lay-id');
         if(data_type=='this'){
           $('.layui-tab-title li[lay-id='+lay_id+']').find('.layui-tab-close').click();
         }else if(data_type=='other'){
@@ -342,8 +343,8 @@ layui.use(['layer','element','jquery'],function() {
 * to work around bugs in some JS interpreters.
 */
 function safeAdd (x, y) {
-var lsw = (x & 0xffff) + (y & 0xffff)
-var msw = (x >> 16) + (y >> 16) + (lsw >> 16)
+let lsw = (x & 0xffff) + (y & 0xffff)
+let msw = (x >> 16) + (y >> 16) + (lsw >> 16)
 return (msw << 16) | (lsw & 0xffff)
 }
 
@@ -381,15 +382,15 @@ function binlMD5 (x, len) {
 x[len >> 5] |= 0x80 << (len % 32)
 x[((len + 64) >>> 9 << 4) + 14] = len
 
-var i
-var olda
-var oldb
-var oldc
-var oldd
-var a = 1732584193
-var b = -271733879
-var c = -1732584194
-var d = 271733878
+let i
+let olda
+let oldb
+let oldc
+let oldd
+let a = 1732584193
+let b = -271733879
+let c = -1732584194
+let d = 271733878
 
 for (i = 0; i < x.length; i += 16) {
   olda = a
@@ -477,9 +478,9 @@ return [a, b, c, d]
 * Convert an array of little-endian words to a string
 */
 function binl2rstr (input) {
-var i
-var output = ''
-var length32 = input.length * 32
+let i
+let output = ''
+let length32 = input.length * 32
 for (i = 0; i < length32; i += 8) {
   output += String.fromCharCode((input[i >> 5] >>> (i % 32)) & 0xff)
 }
@@ -491,13 +492,13 @@ return output
 * Characters >255 have their high-byte silently ignored.
 */
 function rstr2binl (input) {
-var i
-var output = []
+let i
+let output = []
 output[(input.length >> 2) - 1] = undefined
 for (i = 0; i < output.length; i += 1) {
   output[i] = 0
 }
-var length8 = input.length * 8
+let length8 = input.length * 8
 for (i = 0; i < length8; i += 8) {
   output[i >> 5] |= (input.charCodeAt(i / 8) & 0xff) << (i % 32)
 }
@@ -515,11 +516,11 @@ return binl2rstr(binlMD5(rstr2binl(s), s.length * 8))
 * Calculate the HMAC-MD5, of a key and some data (raw strings)
 */
 function rstrHMACMD5 (key, data) {
-var i
-var bkey = rstr2binl(key)
-var ipad = []
-var opad = []
-var hash
+let i
+let bkey = rstr2binl(key)
+let ipad = []
+let opad = []
+let hash
 ipad[15] = opad[15] = undefined
 if (bkey.length > 16) {
   bkey = binlMD5(bkey, key.length * 8)
@@ -536,10 +537,10 @@ return binl2rstr(binlMD5(opad.concat(hash), 512 + 128))
 * Convert a raw string to a hex string
 */
 function rstr2hex (input) {
-var hexTab = '0123456789abcdef'
-var output = ''
-var x
-var i
+let hexTab = '0123456789abcdef'
+let output = ''
+let x
+let i
 for (i = 0; i < input.length; i += 1) {
   x = input.charCodeAt(i)
   output += hexTab.charAt((x >>> 4) & 0x0f) + hexTab.charAt(x & 0x0f)

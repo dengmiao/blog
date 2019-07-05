@@ -9,7 +9,7 @@ let dateUtil = {
      * @param pattern {string} 格式，例："yyyy-MM-dd HH:mm:ss"
      * @returns {String} 返回格式化后的日期，如："2018-01-22 18:04:30"
      */
-    format : function (date, pattern) {
+    format : (date, pattern) => {
         const time = {
             "M+": date.getMonth() + 1,
             "d+": date.getDate(),
@@ -36,7 +36,7 @@ let dateUtil = {
      * @param pattern {String} 返回时间的格式，例："yyyy-MM-dd HH:mm"
      * @returns {String} 返回计算后的时间，如："2018-01-24 18:00"
      */
-    offsetHours : function (time, offset, pattern) {
+    offsetHours : (time, offset, pattern) => {
         let date = new Date(Date.parse(time));
         let yyyy = date.getFullYear();
         let MM = date.getMonth();
@@ -52,7 +52,7 @@ let dateUtil = {
      * @param offset {Number} 偏移量，负数代表上几个月，正数代表下几个月，例：1
      * @returns {String} 返回计算后的月份，如："2018-02"
      */
-    offsetMonths : function (month, offset) {
+    offsetMonths : (month, offset) => {
         let date = new Date(Date.parse(month));
         let year = date.getFullYear();
         let month1 = date.getMonth();
@@ -64,7 +64,7 @@ let dateUtil = {
      * @param date {String} 指定日期,例："2018-01-23"
      * @returns {Number} 返回星期几(1-7)，如：2
      */
-    dayOfWeek : function (date) {
+    dayOfWeek : (date) => {
         let time = new Date(Date.parse(date));
         let weekday=new Array(7);
         weekday[0]= 7;
@@ -81,7 +81,7 @@ let dateUtil = {
      * @param month {String} 指定月份：例"2018-01"
      * @returns {number} 返回指定月份有多少天，如：31
      */
-    daysInMonth : function (month0) {
+    daysInMonth : (month0) => {
         let date = new Date(Date.parse(month0));
         let year = date.getFullYear();
         let month = date.getMonth();
