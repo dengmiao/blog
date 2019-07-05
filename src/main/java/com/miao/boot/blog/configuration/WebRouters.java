@@ -219,9 +219,10 @@ public class WebRouters {
                                 .ofType(Authentication.class)
                                 .flatMap(auth -> {
                                     User user = User.class.cast(auth.getPrincipal());
-                                    List<Permission> permissionList = user.getPermissionList().stream().filter(p -> p != null).collect(Collectors.toList());
-                                    List<Permission> resource = permissionList.stream()
+                                    List<Permission> permissionList = user.getPermissionList().stream().filter(p -> p != null)
                                             .sorted(Comparator.comparing(p -> p.getSort())).collect(Collectors.toList());
+                                    List<Permission> resource = permissionList.stream()
+                                            .collect(Collectors.toList());
                                     List<Permission> root = permissionList.stream()
                                             .filter(item -> "0".equals(item.getPid())).collect(Collectors.toList());
                                     List<Permission> permissions = recursiveRec(root, resource);
