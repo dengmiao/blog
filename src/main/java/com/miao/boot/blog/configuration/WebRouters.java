@@ -1,6 +1,5 @@
 package com.miao.boot.blog.configuration;
 
-import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.miao.boot.blog.domain.Permission;
 import com.miao.boot.blog.domain.User;
@@ -8,6 +7,7 @@ import com.miao.boot.blog.handler.CommonHandler;
 import com.miao.boot.blog.handler.PermissionHandler;
 import com.miao.boot.blog.handler.UserHandler;
 import com.miao.boot.blog.handler.ViewHandler;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
@@ -33,6 +33,7 @@ import java.util.stream.Collectors;
  * @create: 2019-06-10 13:35
  **/
 @Component
+@Slf4j
 public class WebRouters {
 
     @Bean
@@ -218,12 +219,13 @@ public class WebRouters {
                                 .ofType(Authentication.class)
                                 .flatMap(auth -> {
                                     User user = User.class.cast(auth.getPrincipal());
-                                    List<Permission> resource = user.getPermissionList().stream()
-                                            .filter(p -> p != null)
+                                    List<Permission> permissionList = user.getPermissionList().stream().filter(p -> p != null).collect(Collectors.toList());
+                                    List<Permission> resource = permissionList.stream()
                                             .sorted(Comparator.comparing(p -> p.getSort())).collect(Collectors.toList());
-                                    List<Permission> root = resource.stream()
+                                    List<Permission> root = permissionList.stream()
                                             .filter(item -> "0".equals(item.getPid())).collect(Collectors.toList());
                                     List<Permission> permissions = recursiveRec(root, resource);
+                                    log.info("菜单: 资源总数->{}, 根->{}", resource.size(), permissions.size());
                                     String json = JSONUtil.formatJsonStr(JSONUtil.toJsonStr(permissions));
                                     System.out.println(/*"菜单:\n" +json*/);
                                     Map<String, Object> attr = req.exchange().getAttributes();
@@ -273,7 +275,7 @@ public class WebRouters {
      * @param resource
      * @return
      */
-    private List<Permission> recursiveRec(List<Permission> list, final List<Permission> resource) {
+    private List<Permission> recursiveRec(List<Permission> list, List<Permission> resource) {
         return list.stream().map(item -> {
             List<Permission> children = resource.stream()
                     //.sorted(Comparator.comparing(Permission::getSort))

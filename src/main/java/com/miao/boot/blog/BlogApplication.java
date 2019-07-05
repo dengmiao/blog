@@ -8,6 +8,7 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.core.env.Environment;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRepositories;
 import org.springframework.web.reactive.config.EnableWebFlux;
 
@@ -23,6 +24,7 @@ import static org.springframework.security.config.Elements.HTTP;
 @Slf4j
 @SpringBootApplication
 @EnableReactiveMongoRepositories
+@EnableMongoRepositories
 @EnableWebFlux
 public class BlogApplication implements ApplicationRunner {
 
