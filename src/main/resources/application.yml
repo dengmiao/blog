@@ -47,6 +47,7 @@ blog:
       - /login
       - /logout
       - /echo
+      - /test/**
     # 记住我有效时间(s)
     remember-me-timeout: 3600
     # 验证码相关配置

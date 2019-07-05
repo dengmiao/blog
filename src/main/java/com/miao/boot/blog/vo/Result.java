@@ -48,6 +48,8 @@ public class Result<T> implements Serializable {
     @JsonIgnore
     public static final HttpStatus OK = HttpStatus.OK;
 
+    public static transient final HttpStatus NOTFOUND = HttpStatus.NOT_FOUND;
+
     @JsonIgnore
     public static transient final HttpStatus ERROR = HttpStatus.INTERNAL_SERVER_ERROR;
 
@@ -61,6 +63,10 @@ public class Result<T> implements Serializable {
         this.message = message;
         this.code = OK.value();
         this.success = true;
+    }
+
+    public static Result<?> notFound(String msg) {
+        return error(NOTFOUND.value(), msg);
     }
 
     public static Result<Object> error(String msg) {

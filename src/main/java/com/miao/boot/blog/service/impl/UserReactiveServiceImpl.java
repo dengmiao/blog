@@ -6,6 +6,7 @@ import com.miao.boot.blog.domain.User;
 import com.miao.boot.blog.repository.*;
 import com.miao.boot.blog.service.UserReactiveService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
@@ -35,6 +36,11 @@ public class UserReactiveServiceImpl implements UserReactiveService {
         this.userReactiveRepository = userReactiveRepository;
         this.roleRepository = roleRepository;
         this.permissionRepository = permissionRepository;
+    }
+
+    @Override
+    public ReactiveMongoRepository<User, String> getRepository() {
+        return this.userReactiveRepository;
     }
 
     @Override
@@ -71,4 +77,5 @@ public class UserReactiveServiceImpl implements UserReactiveService {
         //.log()
         ;
     }
+
 }
