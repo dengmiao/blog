@@ -261,18 +261,24 @@ public class WebRouters {
                         .andRoute(RequestPredicates.POST("/").and(RequestPredicates.accept(MediaType.APPLICATION_JSON_UTF8)), userHandler::create)
                         .andRoute(RequestPredicates.DELETE("/{id}"), userHandler::delete)
         );*/
+        /**
+         * 关于路由命名: /模块名 + /功能性描述
+         * 分页: /page
+         * 普通列表: /list
+         * 增删改查: 以rest风格, 请求方式描述 post/delete/put/get + /{id}/, 为确保路由不冲突, 该组路由以/结尾
+         */
         return RouterFunctions.route(RequestPredicates.GET("/logout123"), commonHandler::logout)
                 // user相关
-                .andRoute(RequestPredicates.GET(ADMIN_ROOT_PATH + "/user/list/"), userHandler::list)
+                .andRoute(RequestPredicates.GET(ADMIN_ROOT_PATH + "/user/list"), userHandler::list)
                 .andRoute(RequestPredicates.POST(ADMIN_ROOT_PATH + "/user/").and(RequestPredicates.accept(MediaType.APPLICATION_JSON_UTF8)), userHandler::create)
-                .andRoute(RequestPredicates.DELETE(ADMIN_ROOT_PATH + "/user/{id}"), userHandler::delete)
-                .andRoute(RequestPredicates.PUT(ADMIN_ROOT_PATH + "/user/{id}").and(RequestPredicates.accept(MediaType.APPLICATION_JSON_UTF8)), userHandler::update)
-                .andRoute(RequestPredicates.GET(ADMIN_ROOT_PATH + "/user/{id}"), userHandler::retrieve)
+                .andRoute(RequestPredicates.DELETE(ADMIN_ROOT_PATH + "/user/{id}/"), userHandler::delete)
+                .andRoute(RequestPredicates.PUT(ADMIN_ROOT_PATH + "/user/{id}/").and(RequestPredicates.accept(MediaType.APPLICATION_JSON_UTF8)), userHandler::update)
+                .andRoute(RequestPredicates.GET(ADMIN_ROOT_PATH + "/user/{id}/"), userHandler::retrieve)
                 // permission相关
                 .andRoute(RequestPredicates.POST(ADMIN_ROOT_PATH + "/permission/"), permissionHandler::create)
                 // test
-                .andRoute(RequestPredicates.GET(ADMIN_ROOT_PATH + "/test/page/"), testHandler::page)
-                .andRoute(RequestPredicates.GET(ADMIN_ROOT_PATH + "/test/{id}"), testHandler::retrieve)
+                .andRoute(RequestPredicates.GET(ADMIN_ROOT_PATH + "/test/page"), testHandler::page)
+                .andRoute(RequestPredicates.GET(ADMIN_ROOT_PATH + "/test/{id}/"), testHandler::retrieve)
                 ;
     }
 
