@@ -13,43 +13,49 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
-import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.Map;
 
 /**
- * @title: BaseHandler
+ * @title: BaseReactiveHandler
  * @description: 公有的handler
  * Create Retrieve Update Delete
  * 返回Publisher<Result<E>>
  * @author: dengmiao
  * @create: 2019-07-05 15:16
  **/
-@Slf4j
-public abstract class BaseHandler<E, ID extends Serializable> {
-
-    private final MongoPageHelper mongoPageHelper;
-
-    public BaseHandler(final MongoPageHelper mongoPageHelper) {
-        this.mongoPageHelper = mongoPageHelper;
-    }
+public interface BaseReactiveHandler<E, ID extends Serializable> {
 
     /**
      * 获取server实现
      * @return
      */
-    public abstract BaseReactiveService getReactiveService();
+    BaseReactiveService getReactiveService();
+
+    /**
+     * 获取mongo的分页工具
+     * @return
+     */
+    MongoPageHelper getMongoPageHelper();
 
     /**
      * 获取泛型的类模板对象
      * @return
      */
-    private Class<E> getClazz() {
-        Class<E> clazz = (Class <E>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+    default Class<E> getClazz() {
+        // 获取class上的泛型类型
+        // Class<E> clazz = (Class <E>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+
+        // 获取interface上的泛型类型
+        Type[] types = getClass().getGenericInterfaces();
+        ParameterizedType parameterized = (ParameterizedType) types[0];
+        Class<E> clazz = (Class<E>) parameterized.getActualTypeArguments()[0];
+
         return clazz;
     }
 
@@ -59,7 +65,7 @@ public abstract class BaseHandler<E, ID extends Serializable> {
      * @param bean
      * @return
      */
-    private Criteria AssembleCriteria(Class clazz, final E bean) {
+    default Criteria AssembleCriteria(Class clazz, final E bean) {
         Criteria criteria = Criteria.where("_id").exists(true);
         Arrays.stream(clazz.getDeclaredFields()).forEach(f -> {
             try {
@@ -83,14 +89,14 @@ public abstract class BaseHandler<E, ID extends Serializable> {
      * @param request
      * @return
      */
-    public Mono<ServerResponse> page(ServerRequest request) {
+    default Mono<ServerResponse> page(ServerRequest request) {
         Class<E> clazz = getClazz();
         Map map = request.queryParams().toSingleValueMap();
         E bean = BeanUtil.mapToBean(map, clazz, true);
         Page page = BeanUtil.mapToBean(map, Page.class, true);
         final Query query = BeanUtil.isEmpty(bean) ? new Query() : new Query(AssembleCriteria(clazz, bean));
 
-        PageResult<E> pageResult = mongoPageHelper.pageQuery(query, clazz, e -> e, page.getPageSize(),
+        PageResult<E> pageResult = getMongoPageHelper().pageQuery(query, clazz, e -> e, page.getPageSize(),
                 page.getPageNum(), page.getLastId());
 
         Mono resultMono = Mono.just(Result.ok(pageResult));
@@ -104,7 +110,7 @@ public abstract class BaseHandler<E, ID extends Serializable> {
      * @param request
      * @return
      */
-    public Mono<ServerResponse> create(ServerRequest request) {
+    default Mono<ServerResponse> create(ServerRequest request) {
         Mono<E> e = request.bodyToMono(getClazz());
         // 数据校验？
         return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -118,7 +124,7 @@ public abstract class BaseHandler<E, ID extends Serializable> {
      * @param request
      * @return
      */
-    public Mono<ServerResponse> retrieve(ServerRequest request) {
+    default Mono<ServerResponse> retrieve(ServerRequest request) {
         String id = request.pathVariable("id");
         return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON_UTF8)
                 .body(getReactiveService().retrieve(id)
@@ -132,7 +138,7 @@ public abstract class BaseHandler<E, ID extends Serializable> {
      * @param request
      * @return
      */
-    public Mono<ServerResponse> update(ServerRequest request) {
+    default Mono<ServerResponse> update(ServerRequest request) {
         String id = request.pathVariable("id");
         Mono<E> e = request.bodyToMono(getClazz());
         // 数据校验？
@@ -149,7 +155,7 @@ public abstract class BaseHandler<E, ID extends Serializable> {
      * @param request
      * @return
      */
-    public Mono<ServerResponse> delete(ServerRequest request) {
+    default Mono<ServerResponse> delete(ServerRequest request) {
         String ids = request.pathVariable("id");
         return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON_UTF8)
                 .body(getReactiveService().delete(ids).then(Mono.just(Result.ok())), Object.class)
