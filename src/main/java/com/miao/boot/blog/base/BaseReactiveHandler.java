@@ -45,16 +45,17 @@ public interface BaseReactiveHandler<E, ID extends Serializable> {
 
     /**
      * 获取泛型的类模板对象
+     * @param index
      * @return
      */
-    default Class<E> getClazz() {
+    default Class<E> getClazz(int index) {
         // 获取class上的泛型类型
         // Class<E> clazz = (Class <E>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
 
         // 获取interface上的泛型类型
         Type[] types = getClass().getGenericInterfaces();
-        ParameterizedType parameterized = (ParameterizedType) types[0];
-        Class<E> clazz = (Class<E>) parameterized.getActualTypeArguments()[0];
+        ParameterizedType parameterized = (ParameterizedType) types[index];
+        Class<E> clazz = (Class<E>) parameterized.getActualTypeArguments()[index];
 
         return clazz;
     }
@@ -90,7 +91,7 @@ public interface BaseReactiveHandler<E, ID extends Serializable> {
      * @return
      */
     default Mono<ServerResponse> page(ServerRequest request) {
-        Class<E> clazz = getClazz();
+        Class<E> clazz = getClazz(0);
         Map map = request.queryParams().toSingleValueMap();
         E bean = BeanUtil.mapToBean(map, clazz, true);
         Page page = BeanUtil.mapToBean(map, Page.class, true);
@@ -111,11 +112,11 @@ public interface BaseReactiveHandler<E, ID extends Serializable> {
      * @return
      */
     default Mono<ServerResponse> create(ServerRequest request) {
-        Mono<E> e = request.bodyToMono(getClazz());
+        Mono<E> e = request.bodyToMono(getClazz(0));
         // 数据校验？
         return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON_UTF8)
                 .body(getReactiveService().create(e)
-                        .flatMap(et -> Mono.just(Result.ok(et))), getClazz())
+                        .flatMap(et -> Mono.just(Result.ok(et))), getClazz(0))
                 ;
     }
 
@@ -129,7 +130,7 @@ public interface BaseReactiveHandler<E, ID extends Serializable> {
         return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON_UTF8)
                 .body(getReactiveService().retrieve(id)
                         .flatMap(et -> Mono.just(Result.ok(et)))
-                        .switchIfEmpty(Mono.just(Result.notFound("对象不存在"))), getClazz())
+                        .switchIfEmpty(Mono.just(Result.notFound("对象不存在"))), getClazz(0))
                 ;
     }
 
@@ -140,13 +141,13 @@ public interface BaseReactiveHandler<E, ID extends Serializable> {
      */
     default Mono<ServerResponse> update(ServerRequest request) {
         String id = request.pathVariable("id");
-        Mono<E> e = request.bodyToMono(getClazz());
+        Mono<E> e = request.bodyToMono(getClazz(0));
         // 数据校验？
         return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON_UTF8)
                 .body(getReactiveService().update(id, e)
                         .flatMap(et -> Mono.just(Result.ok(et)))
                         // 不存在
-                        , getClazz())
+                        , getClazz(0))
                 ;
     }
 
