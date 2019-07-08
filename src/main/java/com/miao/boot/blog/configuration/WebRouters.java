@@ -263,7 +263,7 @@ public class WebRouters {
         );*/
         return RouterFunctions.route(RequestPredicates.GET("/logout123"), commonHandler::logout)
                 // user相关
-                .andRoute(RequestPredicates.GET(ADMIN_ROOT_PATH + "/user/list"), userHandler::list)
+                .andRoute(RequestPredicates.GET(ADMIN_ROOT_PATH + "/user/list/"), userHandler::list)
                 .andRoute(RequestPredicates.POST(ADMIN_ROOT_PATH + "/user/").and(RequestPredicates.accept(MediaType.APPLICATION_JSON_UTF8)), userHandler::create)
                 .andRoute(RequestPredicates.DELETE(ADMIN_ROOT_PATH + "/user/{id}"), userHandler::delete)
                 .andRoute(RequestPredicates.PUT(ADMIN_ROOT_PATH + "/user/{id}").and(RequestPredicates.accept(MediaType.APPLICATION_JSON_UTF8)), userHandler::update)
@@ -271,6 +271,7 @@ public class WebRouters {
                 // permission相关
                 .andRoute(RequestPredicates.POST(ADMIN_ROOT_PATH + "/permission/"), permissionHandler::create)
                 // test
+                .andRoute(RequestPredicates.GET(ADMIN_ROOT_PATH + "/test/page/"), testHandler::page)
                 .andRoute(RequestPredicates.GET(ADMIN_ROOT_PATH + "/test/{id}"), testHandler::retrieve)
                 ;
     }

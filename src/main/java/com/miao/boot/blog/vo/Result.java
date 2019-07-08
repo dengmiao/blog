@@ -48,6 +48,7 @@ public class Result<T> implements Serializable {
     @JsonIgnore
     public static final HttpStatus OK = HttpStatus.OK;
 
+    @JsonIgnore
     public static transient final HttpStatus NOTFOUND = HttpStatus.NOT_FOUND;
 
     @JsonIgnore

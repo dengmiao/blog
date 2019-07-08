@@ -1,5 +1,6 @@
 package com.miao.boot.blog.base;
 
+import cn.hutool.core.util.StrUtil;
 import org.reactivestreams.Publisher;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
@@ -92,7 +93,7 @@ public interface BaseReactiveService<E, ID extends Serializable> {
      * @return
      */
     default Mono<Void> delete(ID id) {
-        String[] idArray = id.toString().split(",");
+        String[] idArray = StrUtil.split(id.toString(), ",");
         List idList = Arrays.asList(idArray);
         return getRepository().deleteAll(idList);
     }
