@@ -3,8 +3,8 @@ package com.miao.boot.blog.handler;
 import com.miao.boot.blog.base.BaseReactiveHandler;
 import com.miao.boot.blog.base.BaseReactiveService;
 import com.miao.boot.blog.base.MongoPageHelper;
-import com.miao.boot.blog.domain.User;
-import com.miao.boot.blog.service.UserReactiveService;
+import com.miao.boot.blog.domain.Permission;
+import com.miao.boot.blog.service.PermissionReactiveService;
 import org.springframework.stereotype.Component;
 
 /**
@@ -14,17 +14,18 @@ import org.springframework.stereotype.Component;
  * @create: 2019-07-05 15:14
  **/
 @Component
-public class TestHandler implements BaseReactiveHandler<User, String> {
+public class TestHandler implements BaseReactiveHandler<Permission, String> {
 
     private final MongoPageHelper mongoPageHelper;
 
-    private final UserReactiveService userReactiveService;
+    private final PermissionReactiveService permissionReactiveService;
 
-    public TestHandler(final MongoPageHelper mongoPageHelper,
-                       final UserReactiveService userReactiveService
+    public TestHandler(
+            final MongoPageHelper mongoPageHelper
+            , final PermissionReactiveService permissionReactiveService
     ) {
         this.mongoPageHelper = mongoPageHelper;
-        this.userReactiveService = userReactiveService;
+        this.permissionReactiveService = permissionReactiveService;
     }
 
     @Override
@@ -34,7 +35,7 @@ public class TestHandler implements BaseReactiveHandler<User, String> {
 
     @Override
     public BaseReactiveService getReactiveService() {
-        return this.userReactiveService;
+        return this.permissionReactiveService;
     }
 
 }

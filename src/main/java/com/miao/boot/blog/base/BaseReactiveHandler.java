@@ -4,7 +4,6 @@ import cn.hutool.core.bean.BeanUtil;
 import com.miao.boot.blog.vo.Page;
 import com.miao.boot.blog.vo.PageResult;
 import com.miao.boot.blog.vo.Result;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -113,8 +112,9 @@ public interface BaseReactiveHandler<E, ID extends Serializable> {
      */
     default Mono<ServerResponse> list(ServerRequest request) {
         // 条件查询？
+        Mono result = Mono.just(Result.ok(getReactiveService().list()));
         return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON_UTF8)
-                .body(getReactiveService().list(), getClazz(0));
+                .body(getReactiveService().list().map(et -> Result.ok(et)), getClazz(0));
     }
 
     /**
