@@ -106,4 +106,12 @@ public interface BaseReactiveService<E, ID extends Serializable> {
     default Mono<Void> delete(Iterable<ID> ids) {
         return getRepository().deleteAll(getRepository().findAllById(ids));
     }
+
+    /**
+     * list
+     * @return
+     */
+    default Flux<E> list() {
+        return getRepository().findAll();
+    }
 }

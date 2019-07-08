@@ -107,6 +107,17 @@ public interface BaseReactiveHandler<E, ID extends Serializable> {
     }
 
     /**
+     * list
+     * @param request
+     * @return
+     */
+    default Mono<ServerResponse> list(ServerRequest request) {
+        // 条件查询？
+        return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON_UTF8)
+                .body(getReactiveService().list(), getClazz(0));
+    }
+
+    /**
      * 新增
      * @param request
      * @return
