@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.beans.PropertyDescriptor;
@@ -17,6 +18,7 @@ import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -112,9 +114,9 @@ public interface BaseReactiveHandler<E, ID extends Serializable> {
      */
     default Mono<ServerResponse> list(ServerRequest request) {
         // 条件查询？
-        Mono result = Mono.just(Result.ok(getReactiveService().list()));
+        Mono result = getReactiveService().list().collectList().flatMap(m -> Mono.just(Result.ok(m)));
         return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON_UTF8)
-                .body(getReactiveService().list().map(et -> Result.ok(et)), getClazz(0));
+                .body(result, getClazz(0));
     }
 
     /**
