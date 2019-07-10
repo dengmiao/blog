@@ -31,15 +31,17 @@ public class JsonServerAuthenticationSuccessHandler implements ServerAuthenticat
         log.info("登录成功 {}", LocalDateTime.now());
         ServerHttpResponse response = webFilterExchange.getExchange().getResponse();
         response.setStatusCode(HttpStatus.OK);
+        response.getHeaders().add("Content-Type", "text/plain;charset=UTF-8");
         // 生成token并返回
         Result body = Result.ok(new HashMap<String, Object>(1){
             {
                 put("token", LocalDateTime.now());
             }
         });
+        String result = JSONUtil.formatJsonStr(JSONUtil.toJsonStr(body));
         DataBuffer buffer = null;
         try {
-            buffer = response.bufferFactory().wrap(ByteUtil.getByteBuffer(body));
+            buffer = response.bufferFactory().wrap(result.getBytes("UTF-8"));
         } catch (IOException e) {
             e.printStackTrace();
         }
