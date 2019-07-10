@@ -1,5 +1,7 @@
 package com.miao.boot.blog.configuration;
 
+import com.miao.boot.blog.security.JsonServerAuthenticationFailureHandler;
+import com.miao.boot.blog.security.JsonServerAuthenticationSuccessHandler;
 import com.miao.boot.blog.security.SecurityProperties;
 import com.miao.boot.blog.security.WebReactiveUserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
@@ -11,6 +13,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.authentication.RedirectServerAuthenticationSuccessHandler;
+import org.springframework.security.web.server.authentication.ServerAuthenticationFailureHandler;
+import org.springframework.security.web.server.authentication.ServerAuthenticationSuccessHandler;
 import org.springframework.security.web.server.authentication.logout.RedirectServerLogoutSuccessHandler;
 import org.springframework.security.web.server.authentication.logout.ServerLogoutSuccessHandler;
 
@@ -42,9 +46,31 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * userDetailService
+     * @return
+     */
     @Bean
     public ReactiveUserDetailsService userDetailsService() {
         return new WebReactiveUserDetailsServiceImpl();
+    }
+
+    /**
+     * 登录成功处理器
+     * @return
+     */
+    @Bean
+    public ServerAuthenticationSuccessHandler successHandler() {
+        return new JsonServerAuthenticationSuccessHandler();
+    }
+
+    /**
+     * 登录失败处理器
+     * @return
+     */
+    @Bean
+    public ServerAuthenticationFailureHandler failureHandler() {
+        return new JsonServerAuthenticationFailureHandler();
     }
 
     /**
@@ -74,9 +100,9 @@ public class SecurityConfig {
                     .formLogin()
                     // 自定义登录界面
                     .loginPage(securityProperties.getLoginUrl())
-                    // 登录成果处理
-                    .authenticationSuccessHandler(new RedirectServerAuthenticationSuccessHandler("/"))
-                    // 登录失败处理
+                    // 登录成果处理 默认登录成功handler > RedirectServerAuthenticationSuccessHandler new RedirectServerAuthenticationSuccessHandler("/")
+                    .authenticationSuccessHandler(successHandler())
+                    // 登录失败处理 默认登录失败handler > RedirectServerAuthenticationFailureHandler
                     //.authenticationFailureHandler(null)
                     .and()
                     .logout()
