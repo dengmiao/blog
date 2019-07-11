@@ -1,7 +1,6 @@
 package com.miao.boot.blog.security;
 
 import cn.hutool.json.JSONUtil;
-import com.miao.boot.blog.toolkit.ByteUtil;
 import com.miao.boot.blog.vo.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.buffer.DataBuffer;
@@ -31,7 +30,8 @@ public class JsonServerAuthenticationSuccessHandler implements ServerAuthenticat
         log.info("登录成功 {}", LocalDateTime.now());
         ServerHttpResponse response = webFilterExchange.getExchange().getResponse();
         response.setStatusCode(HttpStatus.OK);
-        response.getHeaders().add("Content-Type", "text/plain;charset=UTF-8");
+        // /**text/plain;charset=UTF-8*/返回json
+        response.getHeaders().add("Content-Type", "application/json");
         // 生成token并返回
         Result body = Result.ok(new HashMap<String, Object>(1){
             {

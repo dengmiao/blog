@@ -1,5 +1,3 @@
-import ajax from '../ajax'
-
 /**
  * api接口常量
  */
@@ -17,6 +15,9 @@ const ADMIN_ROOT_PATH = ''
 const HOME_ROOT_PATH = ''
 
 const api = {
+    login: (data) => {
+        ajax(ADMIN_ROOT_PATH + '/login', data, 'POST')
+    },
     test: {
         create: ({data}) => {
             ajax(ADMIN_ROOT_PATH + '/test/', data, 'POST')

@@ -1,6 +1,4 @@
-'use strict'
-
-export default function ajax(url, data, type='GET') {
+const ajax = (url, data, type='GET') => {
     return new Promise((resolve, reject) => {
         let promise
         if('GET' === type || 'get' === type) {
@@ -18,6 +16,9 @@ export default function ajax(url, data, type='GET') {
                 data: JSON.stringify(data),
             })
         }
-        promise.then(response => resolve(response)).catch(error => window.layer.alert(`请求失败${error}`))
+        promise.then(response => resolve(response)).catch(error => {
+            window.layer.alert(`请求失败 [${error && error.responseJSON && error.responseJSON.message 
+                ? error.responseJSON.message : null}]`)
+        })
     })
 }

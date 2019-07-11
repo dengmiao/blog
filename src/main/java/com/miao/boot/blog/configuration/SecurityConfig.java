@@ -103,7 +103,7 @@ public class SecurityConfig {
                     // 登录成果处理 默认登录成功handler > RedirectServerAuthenticationSuccessHandler new RedirectServerAuthenticationSuccessHandler("/")
                     .authenticationSuccessHandler(successHandler())
                     // 登录失败处理 默认登录失败handler > RedirectServerAuthenticationFailureHandler
-                    //.authenticationFailureHandler(null)
+                    .authenticationFailureHandler(failureHandler())
                     .and()
                     .logout()
                     .logoutUrl(securityProperties.getLogoutUrl())

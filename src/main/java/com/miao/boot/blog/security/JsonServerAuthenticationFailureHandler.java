@@ -4,6 +4,7 @@ import cn.hutool.json.JSONUtil;
 import com.miao.boot.blog.vo.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.buffer.DataBuffer;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
@@ -40,6 +41,8 @@ public class JsonServerAuthenticationFailureHandler implements ServerAuthenticat
     }
 
     private Mono<Void> writeErrorMessage(ServerHttpResponse response, String errorMsg) {
+        response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR);
+        response.getHeaders().add("Content-Type", "application/json");
         String result = JSONUtil.formatJsonStr(JSONUtil.toJsonStr(Result.error(errorMsg)));
         DataBuffer buffer = null;
         try {
