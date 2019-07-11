@@ -174,25 +174,27 @@ layui.define((exports) => {
         scope: 'cache',
     }
 
-    const util = {
-        // 清空本地缓存
-        removeAll: () => {
-            layui.data(config.scope, null);
-        },
-        // 获取缓存
-        getItem: (key) => {
-            let item = layui.data(config.scope)[key];
-            if (item) {
-                return JSON.parse(item);
-            }
-        },
-        // 缓存
-        putItem: (key, value) => {
-            layui.data(config.scope, {
-                key: key,
-                value: JSON.stringify(value)
-            });
+    const toolKit = {
+        storage: {
+            // 清空本地缓存
+            removeAll: () => {
+                layui.data(config.scope, null);
+            },
+            // 获取缓存
+            getItem: (key) => {
+                let item = layui.data(config.scope)[key];
+                if (item) {
+                    return JSON.parse(item);
+                }
+            },
+            // 缓存
+            putItem: (key, value) => {
+                layui.data(config.scope, {
+                    key: key,
+                    value: JSON.stringify(value)
+                });
+            },
         },
     }
-    exports('util', util)
+    exports('toolKit', toolKit)
 })

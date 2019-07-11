@@ -14,4 +14,26 @@ public interface CommonConstant {
         String USERNAME_PASSWORD_ERROR = "密码错误";
         String USER_LOCKED = "账号被锁定";
     }
+
+    interface Security {
+        /**
+         * token分割
+         */
+        String TOKEN_SPLIT = "Bearer ";
+
+        /**
+         * JWT签名加密key
+         */
+        String JWT_SIGN_KEY = "xxBlog";
+
+        /**
+         * token参数头
+         */
+        String HEADER = "XBlog-Access-Token";
+
+        /**
+         * 权限参数头
+         */
+        String AUTHORITIES = "authorities";
+    }
 }

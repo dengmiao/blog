@@ -35,6 +35,10 @@ blog:
     logout-url: /logout
     # 首页
     index-url: /index
+    # token
+    token:
+      # 失效时间(分钟)
+      expireTime: 60
     # 免认证静态资源路径
     anon-resources-url:
       - /static/**

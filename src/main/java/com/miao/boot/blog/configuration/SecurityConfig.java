@@ -1,9 +1,6 @@
 package com.miao.boot.blog.configuration;
 
-import com.miao.boot.blog.security.JsonServerAuthenticationFailureHandler;
-import com.miao.boot.blog.security.JsonServerAuthenticationSuccessHandler;
-import com.miao.boot.blog.security.SecurityProperties;
-import com.miao.boot.blog.security.WebReactiveUserDetailsServiceImpl;
+import com.miao.boot.blog.security.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
@@ -17,6 +14,7 @@ import org.springframework.security.web.server.authentication.ServerAuthenticati
 import org.springframework.security.web.server.authentication.ServerAuthenticationSuccessHandler;
 import org.springframework.security.web.server.authentication.logout.RedirectServerLogoutSuccessHandler;
 import org.springframework.security.web.server.authentication.logout.ServerLogoutSuccessHandler;
+import org.springframework.security.web.server.context.ServerSecurityContextRepository;
 
 import java.net.URI;
 
@@ -73,6 +71,11 @@ public class SecurityConfig {
         return new JsonServerAuthenticationFailureHandler();
     }
 
+    /*@Bean
+    public ServerSecurityContextRepository securityContextRepository() {
+        return new SecurityContextRepository();
+    }*/
+
     /**
      * 基本配置
      * @param http
@@ -87,6 +90,7 @@ public class SecurityConfig {
                     .frameOptions().disable()
                     .cache().disable()
                 .and()
+                    //.securityContextRepository(securityContextRepository())
                     // 授权配置
                     .authorizeExchange()
                     // 跳过验证 直接访问

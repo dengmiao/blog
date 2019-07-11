@@ -7,24 +7,48 @@
     <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
     <meta http-equiv="Cache-Control" content="no-siteapp" />
     <link rel="stylesheet" th:href="@{static/css/login.css}">
+    <link rel="stylesheet" th:href="@{/static/lib/jigsaw/jigsaw.css}"/>
 </head>
 <body class="login-bg">
     
     <div class="login layui-anim layui-anim-up">
         <div class="message">Blog1.0.0-管理登录</div>
         <div id="darkbannerwrap"></div>
-        
-        <form method="post" class="layui-form" >
-            <input name="username" placeholder="用户名"  type="text" lay-verify="required" class="layui-input" >
-            <hr class="hr15">
-            <input name="password" lay-verify="required" placeholder="密码"  type="password" class="layui-input">
-            <hr class="hr15">
-            <input value="登录" lay-submit lay-filter="login" style="width:100%;" type="submit">
-            <hr class="hr20" >
-        </form>
+
+        <div class="layui-card">
+            <div class="layui-card-body layui-form-pane">
+                <form class="layui-form">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label"><i class="layui-icon layui-icon-username"></i></label>
+                        <div class="layui-input-block">
+                            <input name="username" type="text" lay-verify="username" placeholder="账号" value="admin"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label"><i class="layui-icon layui-icon-password"></i></label>
+                        <div class="layui-input-block">
+                            <input name="password" type="password" lay-verify="password" placeholder="密码" value="123456"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-row inline-block">
+                            <div class="layui-col-xs7">
+                                <div id="captcha"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <input value="登录" lay-submit lay-filter="login" style="width:100%;" type="button">
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 
     <script th:replace="/common/template :: script"></script>
+    <script th:src="@{/static/lib/jigsaw/jigsaw.js}"></script>
     <script>
         $(function  () {
             layui.config({
@@ -34,25 +58,40 @@
                 version: true,
                 //用于开启调试模式，默认false，如果设为true，则JS模块的节点会保留在页面
                 debug: true,
-            }).use(['form', 'api'], function(){
+            }).use(['form', 'layer', 'api', 'toolKit'], function(){
                 const form = layui.form
-                    ,api = layui.api
+                    , layer = layui.layer
+                    , api = layui.api
+                    , toolKit = layui.toolKit
+
+                let codeFlag = false
 
                 //监听提交
                 form.on('submit(login)', (data) => {
                     //console.log($(data.form).serialize(), data.field)
-                    api.login($(data.form).serialize())
-                        .then(response => {
-                            if(response && response.code === 200) {
-                                // 缓存token
-                                layer.msg('登录成功', () => {
-                                    location.href = '/'
-                                })
-                            }
-                    })
-                    return false
+                    if(codeFlag) {
+                        api.login($(data.form).serialize())
+                            .then(response => {
+                                if(response && response.code === 200) {
+                                    // 缓存token
+                                    toolKit.storage.putItem('token', response.result.token)
+                                    layer.msg('登录成功', {time: 888}, () => {
+                                        location.href = '/'
+                                    })
+                                }
+                            })
+                    } else {
+                        layer.msg('请滑动验证框', {icon: 5})
+                    }
                 })
 
+                jigsaw.init(document.getElementById('captcha'), function () {
+                    codeFlag = true;
+                    layer.msg('验证成功', {time: 888});
+                }, function () {
+                    codeFlag = false;
+                    layer.msg('请继续验证', {time: 888});
+                });
             })
         })
     </script>
