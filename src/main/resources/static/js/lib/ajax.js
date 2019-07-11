@@ -1,4 +1,4 @@
-const ajax = (url, data, type='GET') => {
+const ajax = (url, data, type='GET', contentType) => {
     return new Promise((resolve, reject) => {
         let promise
         if('GET' === type || 'get' === type) {
@@ -11,9 +11,10 @@ const ajax = (url, data, type='GET') => {
             promise = $.ajax({
                 url: url,
                 type: type,
-                contentType: "application/json;charset=UTF-8",
+                contentType: contentType || 'application/json;charset=UTF-8',
                 dataType: 'json',
-                data: JSON.stringify(data),
+                data: contentType && 'application/x-www-form-urlencoded' === contentType
+                    ? data : JSON.stringify(data),
             })
         }
         promise.then(response => resolve(response)).catch(error => {

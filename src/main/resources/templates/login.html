@@ -28,15 +28,22 @@
     <script>
         $(function  () {
             layui.use('form', function(){
-              const form = layui.form;
-              // layer.msg('玩命卖萌中', function(){
-              //   //关闭后的操作
-              //   });
-              //监听提交
-              form.on('submit(login)', function(data){
-                api.login(data.field)
-                return false;
-              });
+                const form = layui.form
+
+                //监听提交
+                form.on('submit(login)', (data) => {
+                    //console.log($(data.form).serialize(), data.field)
+                    api.login($(data.form).serialize()).then(response => {
+                        if(response && response.code === 200) {
+                            // 缓存token
+                            layer.msg('登录成功', () => {
+                                location.href = '/'
+                            })
+                        }
+                    })
+                    return false;
+                });
+
             });
         })
     </script>

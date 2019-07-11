@@ -16,20 +16,20 @@ const HOME_ROOT_PATH = ''
 
 const api = {
     login: (data) => {
-        ajax(ADMIN_ROOT_PATH + '/login', data, 'POST')
+        return ajax(ADMIN_ROOT_PATH + '/login', data, 'POST', 'application/x-www-form-urlencoded')
     },
     test: {
         create: ({data}) => {
-            ajax(ADMIN_ROOT_PATH + '/test/', data, 'POST')
+            return ajax(ADMIN_ROOT_PATH + '/test/', data, 'POST')
         },
         retrieve: (id) => {
-            ajax(ADMIN_ROOT_PATH + '/test/' + id)
+            return ajax(ADMIN_ROOT_PATH + '/test/' + id)
         },
         update: (id, data) => {
-            ajax(ADMIN_ROOT_PATH + '/test/' + id, {data}, 'PUT')
+            return ajax(ADMIN_ROOT_PATH + '/test/' + id, {data}, 'PUT')
         },
         delete: (id) => {
-            ajax(ADMIN_ROOT_PATH + '/test/' + id, {}, 'DELETE')
+            return ajax(ADMIN_ROOT_PATH + '/test/' + id, {}, 'DELETE')
         },
     },
 }
