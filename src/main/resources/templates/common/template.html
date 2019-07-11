@@ -35,8 +35,8 @@
         <script type="text/javascript" th:src="@{/static/js/lib/jquery.min.js}"></script>
         <script th:src="@{/static/lib/layui/layui.js}" charset="utf-8"></script>
         <script th:src="@{/static/js/xadmin.js}" charset="utf-8"></script>
-        <script th:src="@{/static/js/lib/ajax.js}" charset="utf-8"></script>
-        <script th:src="@{/static/js/lib/api.js}" charset="utf-8"></script>
+        <!--<script th:src="@{/static/js/lib/ajax.js}" charset="utf-8"></script>
+        <script th:src="@{/static/js/lib/api.js}" charset="utf-8"></script>-->
         <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
         <!--[if lt IE 9]>
             <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
@@ -46,7 +46,8 @@
         <!-- 根路径 -->
         <script type="text/javascript" th:inline="javascript">
             /*<![CDATA[*/
-            const ctxPath = /*[[@{/}]]*/ '';
+            const ctxPath = /*[[@{/}]]*/ ''
+            const libPath = /*[[@{/static/js/lib/}]]*/ ''
             /*]]>*/
         </script>
     </th:block>
